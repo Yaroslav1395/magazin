@@ -36,6 +36,7 @@ CREATE TABLE `products` (
   `image` varchar(200) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
   `price` decimal(38,2) NOT NULL,
+  `amount` int NOT NULL,
   `category_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKog2rp4qthbtt2lfyhfo32lsw9` (`category_id`),
