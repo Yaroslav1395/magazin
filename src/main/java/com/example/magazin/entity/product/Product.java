@@ -31,6 +31,8 @@ public class Product {
     private String description;
     @Column(length = 100, nullable = false)
     private BigDecimal price;
+    @Column(length = 100, nullable = false)
+    private Integer amount;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
