@@ -23,8 +23,12 @@ public class Product {
     private Integer id;
     @Column(length = 100, nullable = false)
     private String name;
+    @Column(length = 100, nullable = false)
+    private String title;
     @Column(length = 100)
     private String company;
+    @Column(length = 100)
+    private String companyImage;
     @Column(length = 200)
     private String image;
     @Column(length = 500)
