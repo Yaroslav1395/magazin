@@ -1,7 +1,9 @@
 package com.example.magazin.entity.product;
 
 import com.example.magazin.entity.category.Category;
+import com.example.magazin.entity.company.Company;
 import com.example.magazin.entity.order.Order;
+import com.example.magazin.entity.productImage.ProductImage;
 import com.example.magazin.entity.review.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,18 +27,17 @@ public class Product {
     private String name;
     @Column(length = 100, nullable = false)
     private String title;
-    @Column(length = 100)
-    private String company;
-    @Column(length = 100)
-    private String companyImage;
-    @Column(length = 200)
-    private String image;
-    @Column(length = 500)
+    @Column(length = 1000, nullable = false)
     private String description;
     @Column(length = 100, nullable = false)
     private BigDecimal price;
     @Column(length = 100, nullable = false)
     private Integer amount;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    private ProductImage productImage;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
