@@ -39,10 +39,10 @@ CREATE TABLE `companies` (
 CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
   `amount` int NOT NULL,
-  `description` varchar(1000) NOT NULL,
+  `description` varchar(2000) NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` decimal(38,2) NOT NULL,
-  `title` varchar(100) NOT NULL,
+  `title` varchar(200) NOT NULL,
   `category_id` int DEFAULT NULL,
   `company_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
