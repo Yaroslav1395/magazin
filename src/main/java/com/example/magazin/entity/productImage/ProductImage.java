@@ -15,13 +15,13 @@ public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(length = 300, nullable = false)
+    @Column(name = "image_one", length = 300, nullable = false)
     private String imageOne;
-    @Column(length = 300, nullable = false)
+    @Column(name = "image_two", length = 300, nullable = false)
     private String imageTwo;
-    @Column(length = 300, nullable = false)
+    @Column(name = "image_three", length = 300, nullable = false)
     private String imageThree;
-    @Column(length = 300, nullable = false)
+    @Column(name = "image_four", length = 300, nullable = false)
     private String imageFour;
     @OneToOne(fetch = FetchType.LAZY)
     private Product product;
