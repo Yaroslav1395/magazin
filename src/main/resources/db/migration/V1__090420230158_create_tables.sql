@@ -29,18 +29,27 @@ CREATE TABLE `categories` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `companies` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `image` varchar(200) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `company` varchar(100) DEFAULT NULL,
-  `description` varchar(500) DEFAULT NULL,
-  `image` varchar(200) DEFAULT NULL,
+  `amount` int NOT NULL,
+  `description` varchar(1000) NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` decimal(38,2) NOT NULL,
-  `amount` int NOT NULL,
+  `title` varchar(100) NOT NULL,
   `category_id` int DEFAULT NULL,
+  `company_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKog2rp4qthbtt2lfyhfo32lsw9` (`category_id`),
-  CONSTRAINT `FKog2rp4qthbtt2lfyhfo32lsw9` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
+  KEY `FKr67nkbovcmogr3o5xkmfepgl1` (`company_id`),
+  CONSTRAINT `FKog2rp4qthbtt2lfyhfo32lsw9` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `FKr67nkbovcmogr3o5xkmfepgl1` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`)
 );
 
 CREATE TABLE `reviews` (
@@ -54,6 +63,18 @@ CREATE TABLE `reviews` (
   KEY `FKcgy7qjc1r99dp117y9en6lxye` (`user_id`),
   CONSTRAINT `FKcgy7qjc1r99dp117y9en6lxye` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `FKpl51cejpw4gy5swfar8br9ngi` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+);
+
+CREATE TABLE `product_images` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `image_four` varchar(300) NOT NULL,
+  `image_one` varchar(300) NOT NULL,
+  `image_three` varchar(300) NOT NULL,
+  `image_two` varchar(300) NOT NULL,
+  `product_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKqnq71xsohugpqwf3c9gxmsuy` (`product_id`),
+  CONSTRAINT `FKqnq71xsohugpqwf3c9gxmsuy` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
 );
 
 CREATE TABLE `orders` (
