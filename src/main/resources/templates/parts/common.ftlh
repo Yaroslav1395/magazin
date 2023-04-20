@@ -17,7 +17,7 @@
             <div>
                 <ul id="navbar">
                     <li><a class="active" href="index.html">Главная</a></li>
-                    <li><a href="shop.html">Магазин</a></li>
+                    <li><a href="http://localhost:8080/quantum/shop">Магазин</a></li>
                     <li><a href="blog.html">Блог</a></li>
                     <li><a href="about.html">О нас</a></li>
                     <li><a href="contact.html">Контакты</a></li>

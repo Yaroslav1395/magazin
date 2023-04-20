@@ -18,4 +18,6 @@ public class Category {
     private String name;
     @Column(length = 200, nullable = false)
     private String image;
+    @Column(length = 200, nullable = false)
+    private String src;
 }

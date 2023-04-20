@@ -648,6 +648,48 @@ footer a:hover {
     color: #fff;
 }
 
+#cell {
+    width: 31%;
+    margin: 10px 10px;
+    border: 1px solid #088178;
+    border-radius: 20px;
+    background-color: #088178;
+}
+
+#cell:hover {
+    box-shadow: 10px 10px 10px 10px rgba(206, 22, 206, 0.3);
+}
+
+#cell:hover h3 {
+    color: #4B0082;
+}
+
+#cell .cel-image-wrapper {
+    margin: 0px 0px 20px 0px;
+    padding: 0px 0px 100% 0px;
+    overflow: hidden;
+    position: relative;
+}
+
+#cell .cel-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+#cell h3 {
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 25px;
+    padding-bottom: 12px;
+}
+
 #pagination a {
     text-decoration: none;
     background-color: #088178;
@@ -1158,11 +1200,6 @@ footer a:hover {
         min-width: 186px;
     }
 
-    #recommended .pro img {
-        width: 170px;
-        height: 100px;
-    }
-
     #banner {
         height: 30vh;
     }
@@ -1224,6 +1261,23 @@ footer a:hover {
         margin: auto 0;
     }
 
+    #shop-catalog {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #cell {
+        width: 22%;
+    }
+
+    #cell h3 {
+        font-size: 18px;
+        padding-bottom: 5px;
+    }
+
+    #cell .cel-image-wrapper {
+        margin: 0px 0px 10px 0px;
+    }
 
 }
 
@@ -1420,6 +1474,14 @@ footer a:hover {
 
     #page-header p {
         margin-left: 0;
+    }
+
+    #shop-catalog {
+        width: 100%;
+    }
+
+    #cell {
+        width: 100%;
     }
 
 }

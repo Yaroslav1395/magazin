@@ -1,14 +1,14 @@
-INSERT categories (id, image, name)
-VALUES (1, 'images/categories/culler.jpg', 'Системы охлаждения'),
-       (2, 'images/categories/monitor.jpg', 'Мониторы'),
-       (3, 'images/categories/hard.jpg', 'Жесткие диски'),
-       (4, 'images/categories/motherboard.jpg', 'Материнские платы'),
-       (5, 'images/categories/processor.jpg', 'Процессоры'),
-       (6, 'images/categories/video.jpg', 'Видеокарты'),
-       (7, 'images/categories/opera.jpg', 'Оперативная память'),
-       (8, 'images/categories/keyboard.jpg', 'Клавиатура и мышки'),
-       (9, 'images/categories/power.jpg', 'Блоки питания'),
-       (10, 'images/categories/notebook.jpg', 'Ноутбуки');
+INSERT categories (id, src, image, name)
+VALUES (1, '/quantum/cullers', 'images/categories/culler.jpg', 'Системы охлаждения'),
+       (2, '/quantum/monitors', '1images/categories/monitor.jpg', 'Мониторы'),
+       (3, '/quantum/hards', 'images/categories/hard.jpg', 'Жесткие диски'),
+       (4, '/quantum/motherboards', 'images/categories/motherboard.jpg', 'Материнские платы'),
+       (5, '/quantum/processors', 'images/categories/processor.jpg', 'Процессоры'),
+       (6, '/quantum/videos', 'images/categories/video.jpg', 'Видеокарты'),
+       (7, '/quantum/operas', 'images/categories/opera.jpg', 'Оперативная память'),
+       (8, '/quantum/keyboards', 'images/categories/keyboard.jpg', 'Клавиатура и мышки'),
+       (9, '/quantum/powers', 'images/categories/power.jpg', 'Блоки питания'),
+       (10, '/quantum/notebooks', 'images/categories/notebook.jpg', 'Ноутбуки');
 
 INSERT companies (id, image, name)
 VALUES (1, 'images/companies/aoc.jpg', 'AOC'),
