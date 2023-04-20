@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,10 @@ public class Product {
     private BigDecimal price;
     @Column(length = 100, nullable = false)
     private Integer amount;
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @Column(name = "receipt_date", length = 200, nullable = false)
+    private LocalDateTime receiptDate;
+    @OneToOne
+    @JoinColumn(name = "product_image_id")
     private ProductImage productImage;
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -42,7 +46,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    @OrderBy("name ASC")
+    @OrderBy("dateTime ASC")
     private List<Review> reviews = new ArrayList<>();
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "orders_products",

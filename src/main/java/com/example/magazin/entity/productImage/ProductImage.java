@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductImage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "image_one", length = 300, nullable = false)
     private String imageOne;
@@ -23,6 +22,4 @@ public class ProductImage {
     private String imageThree;
     @Column(name = "image_four", length = 300, nullable = false)
     private String imageFour;
-    @OneToOne(fetch = FetchType.LAZY)
-    private Product product;
 }
