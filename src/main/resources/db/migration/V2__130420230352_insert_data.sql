@@ -1,6 +1,6 @@
 INSERT categories (id, src, image, name)
 VALUES (1, '/quantum/cullers', 'images/categories/culler.jpg', 'Системы охлаждения'),
-       (2, '/quantum/monitors', '1images/categories/monitor.jpg', 'Мониторы'),
+       (2, '/quantum/monitors', 'images/categories/monitor.jpg', 'Мониторы'),
        (3, '/quantum/hards', 'images/categories/hard.jpg', 'Жесткие диски'),
        (4, '/quantum/motherboards', 'images/categories/motherboard.jpg', 'Материнские платы'),
        (5, '/quantum/processors', 'images/categories/processor.jpg', 'Процессоры'),

@@ -80,4 +80,18 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+    @Override
+    public List<ProductForMainDto> getAllProductsByCategoryId(Integer id) {
+        return productRepository.findByCategoryId(id).stream()
+                .map(product -> ProductForMainDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .title(product.getTitle())
+                        .price(product.getPrice())
+                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                        .categoryDto(categoryMapper.toDto(product.getCategory()))
+                        .build())
+                .toList();
+    }
+
 }

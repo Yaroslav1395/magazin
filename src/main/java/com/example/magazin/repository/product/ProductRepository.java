@@ -24,5 +24,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findMostExpensiveProductInEachCategoryWithLimitFour();
 
     List<Product> findFirst8ByOrderByReceiptDateDesc();
+    List<Product> findByCategoryId(Integer id);
 
 }
