@@ -1,20 +1,21 @@
 <#import "parts/common.ftlh" as c>
 <#import "parts/shopBanner.ftlh" as b>
+<#import "parts/pager.ftlh" as p>
 <@c.page>
     <@b.page>
     </@b.page>
     <section id="product1" class="section-p1">
         <div id="catalog">
-            <ul>
+            <ul id="catalog-ul">
                 <#list categories as category>
-                    <li id="${category.id}"><a href="http://localhost:8080/${category.src}">${category.name}</a></li>
+                    <li id="${category.id}"><a href="#">${category.name}</a></li>
                 </#list>
             </ul>
         </div>
         <#if products??>
             <div id="shop-products">
                 <div class="pro-container">
-                    <#list products as product>
+                    <#list products.content as product>
                         <div id=${product.id} class="pro" onclick="window.location.href='sproduct.html';">
                             <img src="/${product.productImageDto.imageOne}" alt="${product.name}">
                             <div class="des">
@@ -33,11 +34,8 @@
                         </div>
                     </#list>
                 </div>
-                <div id="pagination" class="section-p1">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#"><i class="fa-solid fa-arrow-right"></i></a>
-                </div>
+                <@p.pager url products>
+                </@p.pager>
             </div>
         <#else>
             <div id="shop-catalog">

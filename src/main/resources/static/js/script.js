@@ -54,14 +54,25 @@ const shopCatalog = document.getElementById('shop-catalog');
 if(shopCatalog != null){
     shopCatalog.addEventListener("click", (event) => {
         var target = event.target;
-        console.log(target);
         var productCell = target.closest(".cell");
-        console.log(productCell);
         var categoryId = productCell.id;
 
-        window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId;
+        window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId + "?products=0";
     });
-}
+};
 
+/*Запрос на получение продуктов по категории из боковой навигации*/
+const catalog = document.getElementById('catalog-ul');
+
+if(catalog != null){
+    catalog.addEventListener("click", (event) => {
+        var target = event.target;
+        var li = target.closest("li");
+        console.log(li);
+        var categoryId = li.id;
+        console.log(categoryId);
+        window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId + "?products=0";
+    });
+};
 
 

@@ -653,7 +653,7 @@ footer a:hover {
     width: 80%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 .cell {
@@ -718,12 +718,13 @@ footer a:hover {
 #shop-products .pro-container {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     width: 100%
 }
 
 #shop-products .pro {
     position: relative;
-    width: 23%;
+    width: 27%;
     min-width: 270px;
     padding: 10px 12px;
     border: 1px solid #cce7d0;
@@ -762,13 +763,16 @@ footer a:hover {
 #recommended .pro .des span {
     color: #606063;
     font-size: 12px;
-
 }
 
 #shop-products .pro .des h5 {
     padding-top: 7px;
     color: #1a1a1a;
     font-size: 14px;
+}
+
+#shop-products .pro .des .star {
+    margin-top: 7px
 }
 
 #shop-products .pro .des .star i {
@@ -802,6 +806,10 @@ footer a:hover {
 #shop-products .pro .des .btn a {
     color: #088178;
     padding: 0 9px;
+}
+
+#shop-products .pro .des span {
+    margin-top: 10px;
 }
 
 #pagination {
@@ -1660,6 +1668,18 @@ footer a:hover {
 
     .cell {
         width: 100%;
+    }
+
+    #pagination a {
+            padding: 9px 14px;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: 400;
+    }
+
+    #pagination a i {
+            font-size: 16px;
+            font-weight: 600;
     }
 
 }

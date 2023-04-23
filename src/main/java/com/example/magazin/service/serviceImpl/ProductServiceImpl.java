@@ -14,6 +14,7 @@ import com.example.magazin.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -81,8 +82,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductForMainDto> getAllProductsByCategoryId(Integer id) {
-        return productRepository.findByCategoryId(id).stream()
+    public Page<ProductForMainDto> getAllProductsByCategoryId(Pageable pageable, Integer id) {
+        List<ProductForMainDto> products =  productRepository.findByCategoryId(id).stream()
                 .map(product -> ProductForMainDto.builder()
                         .id(product.getId())
                         .name(product.getName())
@@ -92,6 +93,14 @@ public class ProductServiceImpl implements ProductService {
                         .categoryDto(categoryMapper.toDto(product.getCategory()))
                         .build())
                 .toList();
+        products.forEach(System.out::println);
+        final int toIndex = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(),
+                products.size());
+        final int fromIndex = Math.max(toIndex - pageable.getPageSize(), 0);
+        return new PageImpl<ProductForMainDto>(
+                                products.subList(fromIndex, toIndex),
+                                pageable,
+                                products.size());
     }
 
 }
