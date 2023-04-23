@@ -16,13 +16,13 @@
 
             <div>
                 <ul id="navbar">
-                    <li><a class="active" href="index.html">Главная</a></li>
-                    <li><a href="shop.html">Магазин</a></li>
-                    <li><a href="blog.html">Блог</a></li>
-                    <li><a href="about.html">О нас</a></li>
-                    <li><a href="contact.html">Контакты</a></li>
-                    <li id="lg-bag"><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                    <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+                    <li><a class="active link" href="http://localhost:8080/quantum/main">Главная</a></li>
+                    <li><a class="link" href="http://localhost:8080/quantum/shop">Магазин</a></li>
+                    <li><a class="link" href="http://localhost:8080/quantum/blog">Блог</a></li>
+                    <li><a class="link" href="http://localhost:8080/quantum/about">О нас</a></li>
+                    <li><a class="link" href="http://localhost:8080/quantum/contact">Контакты</a></li>
+                    <li id="lg-bag"><a class="link" href="http://localhost:8080/quantum/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <a class="link" href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
                 </ul>
             </div>
             <div id="mobile">

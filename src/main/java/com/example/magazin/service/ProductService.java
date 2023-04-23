@@ -20,4 +20,5 @@ public interface ProductService {
 
    List<ProductForMainDto> getMostExpensiveProductInEachCategoryWithLimitFour();
    List<ProductForMainDto> getFirst8ByOrderByReceiptDate();
+   Page<ProductForMainDto> getAllProductsByCategoryId(Pageable pageable, Integer id);
 }

@@ -1,14 +1,14 @@
-INSERT categories (id, image, name)
-VALUES (1, 'images/categories/culler.jpg', 'Системы охлаждения'),
-       (2, 'images/categories/monitor.jpg', 'Мониторы'),
-       (3, 'images/categories/hard.jpg', 'Жесткие диски'),
-       (4, 'images/categories/motherboard.jpg', 'Материнские платы'),
-       (5, 'images/categories/processor.jpg', 'Процессоры'),
-       (6, 'images/categories/video.jpg', 'Видеокарты'),
-       (7, 'images/categories/opera.jpg', 'Оперативная память'),
-       (8, 'images/categories/keyboard.jpg', 'Клавиатура и мышки'),
-       (9, 'images/categories/power.jpg', 'Блоки питания'),
-       (10, 'images/categories/notebook.jpg', 'Ноутбуки');
+INSERT categories (id, src, image, name)
+VALUES (1, '/quantum/cullers', 'images/categories/culler.jpg', 'Системы охлаждения'),
+       (2, '/quantum/monitors', 'images/categories/monitor.jpg', 'Мониторы'),
+       (3, '/quantum/hards', 'images/categories/hard.jpg', 'Жесткие диски'),
+       (4, '/quantum/motherboards', 'images/categories/motherboard.jpg', 'Материнские платы'),
+       (5, '/quantum/processors', 'images/categories/processor.jpg', 'Процессоры'),
+       (6, '/quantum/videos', 'images/categories/video.jpg', 'Видеокарты'),
+       (7, '/quantum/operas', 'images/categories/opera.jpg', 'Оперативная память'),
+       (8, '/quantum/keyboards', 'images/categories/keyboard.jpg', 'Клавиатура и мышки'),
+       (9, '/quantum/powers', 'images/categories/power.jpg', 'Блоки питания'),
+       (10, '/quantum/notebooks', 'images/categories/notebook.jpg', 'Ноутбуки');
 
 INSERT companies (id, image, name)
 VALUES (1, 'images/companies/aoc.jpg', 'AOC'),
@@ -76,6 +76,7 @@ VALUES (1, 'images/products/monitors/C27F390FHI-1.jpg', 'images/products/monitor
        (45, 'images/products/hard/WD10EZEX-1.jpg', 'images/products/hard/WD10EZEX-2.jpg', 'images/products/hard/WD10EZEX-3.jpg', 'images/products/hard/WD10EZEX-4.jpg'),
        (46, 'images/products/hard/WD20EZBX-1.jpg', 'images/products/hard/WD20EZBX-1.jpg', 'images/products/hard/WD20EZBX-1.jpg', 'images/products/hard/WD20EZBX-1.jpg'),
        (47, 'images/products/hard/ST1000DM010-1.jpg', 'images/products/hard/ST1000DM010-1.jpg', 'images/products/hard/ST1000DM010-1.jpg', 'images/products/hard/ST1000DM010-1.jpg');
+
 
 INSERT products (id, product_image_id, receipt_date, name, title, description, price, amount, category_id, company_id)
 VALUES (1, 1, '2023-01-15 10:15:30.55', 'Монитор Samsung C27F390FHI 27" Black', '1920x1080/VA/60Hz/4ms/VGA (D-Sub), HDMI, VESA', 'Samsung C27F390FHI - 27-дюймовый монитор с изогнутым экраном. Благодаря такому конструктивному решению обеспечивается более глубокое погружение в процесс, что особенно актуально для игр и кино. Разрешение картинки составляет 1920 x 1080 пикселей. Антибликовое же покрытие позволяет с комфортом пользоваться устройством даже в условиях чрезмерной освещенности. Однако все это лишь вершина Айсберга, а на деле достоинств у данной модели намного больше. Взять, например, технологию Flicker Free, способствующую снижению мерцаний. Таким образом, в значительной степени уменьшается нагрузка на глаза, вследствие чего вы можете работать или же наслаждаться играми/кино в течение более длительного времени. Время отклика составляет - 1 мс. Этого показателя вполне достаточно для того, чтобы переходы между кадрами в процессе демонстрации динамичных сцен отображались предельно плавно. Для подключения к ПК, игровым консолям и прочим видам мультимедийной техники можно будет задействовать интерфейсы HDMI и VGA.', 14890, 10, 2, 8),

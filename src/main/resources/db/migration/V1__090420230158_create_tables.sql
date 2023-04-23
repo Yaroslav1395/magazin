@@ -32,6 +32,7 @@ CREATE TABLE `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
   `image` varchar(200) NOT NULL,
   `name` varchar(200) NOT NULL,
+  `src` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
