@@ -36,16 +36,11 @@ public class ShopController {
             @PathVariable Integer id,
             @RequestParam(name = "products") Integer pageNumber,
             Model model){
-        System.out.println(id);
+
         Sort sortBy = Sort.by(Sort.Order.asc("id"));
         Pageable pageable = PageRequest.of(pageNumber, 6, sortBy);
         Page<ProductForMainDto> product = productService.getAllProductsByCategoryId(pageable, id);
-        System.out.println("---------------------------------------------------------------------");
-        System.out.println(product.getTotalElements());
-        System.out.println(product.getTotalPages());
-        System.out.println(product.getSize());
-        System.out.println(product.getNumber());
-        System.out.println("---------------------------------------------------------------------");
+
         model.addAttribute("products", product);
         model.addAttribute("url", "http://localhost:8080/quantum/shop/category/" + id);
         model.addAttribute("categories", categoryService.getAllCategories());

@@ -1,37 +1,43 @@
 package com.example.magazin.service.serviceImpl;
 
-import com.example.magazin.dto.mappers.CategoryMapper;
-import com.example.magazin.dto.mappers.ProductImageMapper;
-import com.example.magazin.dto.mappers.ProductMapper;
+import com.example.magazin.dto.mappers.*;
 import com.example.magazin.dto.product.ProductForMainDto;
-import com.example.magazin.dto.productImageDto.ProductImageDto;
+import com.example.magazin.dto.product.ProductForSingleDto;
 import com.example.magazin.entity.product.Product;
-import com.example.magazin.entity.productImage.ProductImage;
-import com.example.magazin.entity.review.Review;
 import com.example.magazin.exceptions.ResourceNotFoundException;
 import com.example.magazin.repository.product.ProductRepository;
 import com.example.magazin.service.ProductService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
-    private ProductMapper productMapper;
     private CategoryMapper categoryMapper;
+    private CompanyMapper companyMapper;
     private ProductImageMapper productImageMapper;
 
-    public Product getProductById(Integer id){
-        return productRepository.findById(id)
+    public ProductForSingleDto getProductById(Integer id){
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
+
+        return ProductForSingleDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .title(product.getTitle())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .companyDto(companyMapper.toDto(product.getCompany()))
+                .categoryDto(categoryMapper.toDto(product.getCategory()))
+                .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                .build();
     }
     public boolean existsById(Integer id){
         return productRepository.existsById(id);
@@ -93,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
                         .categoryDto(categoryMapper.toDto(product.getCategory()))
                         .build())
                 .toList();
-        products.forEach(System.out::println);
+
         final int toIndex = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(),
                 products.size());
         final int fromIndex = Math.max(toIndex - pageable.getPageSize(), 0);
