@@ -1,6 +1,7 @@
 package com.example.magazin.service;
 
 import com.example.magazin.dto.product.ProductForMainDto;
+import com.example.magazin.dto.product.ProductForSingleDto;
 import com.example.magazin.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ProductService {
-   Product getProductById(Integer id);
+   ProductForSingleDto getProductById(Integer id);
 
    boolean existsById(Integer id);
    Page<Product> getAllPageable(Pageable pageable);

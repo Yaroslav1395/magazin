@@ -4,7 +4,7 @@
 <@c.page>
     <@b.page>
     </@b.page>
-    <section id="product1" class="section-p1">
+    <section id="product1">
         <div id="catalog">
             <ul id="catalog-ul">
                 <#list categories as category>
@@ -14,9 +14,9 @@
         </div>
         <#if products??>
             <div id="shop-products">
-                <div class="pro-container">
+                <div class="pro-container" id="pro-container">
                     <#list products.content as product>
-                        <div id=${product.id} class="pro" onclick="window.location.href='sproduct.html';">
+                        <div id=${product.id} class="pro">
                             <img src="/${product.productImageDto.imageOne}" alt="${product.name}">
                             <div class="des">
                                 <span>${product.categoryDto.name}</span>
@@ -29,7 +29,7 @@
                                     <i class="fas fa-star"></i>
                                 </div>
                                 <h4>${product.price} сом</h4>
-                                <div class="btn"><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></div>
+                                <div class="btn"><a class="link" href="#"><i class="fa-solid fa-cart-shopping"></i></a></div>
                             </div>
                         </div>
                     </#list>

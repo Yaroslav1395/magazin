@@ -68,11 +68,61 @@ if(catalog != null){
     catalog.addEventListener("click", (event) => {
         var target = event.target;
         var li = target.closest("li");
-        console.log(li);
         var categoryId = li.id;
-        console.log(categoryId);
         window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId + "?products=0";
     });
 };
+
+/*Переход к информации о продукте при клике на карточку или добавление в корзину*/
+const proContainer = document.getElementById('pro-container');
+if(proContainer != null) {
+    let cart = [];
+    proContainer.addEventListener("click", (event) => {
+        var target = event.target;
+        if(target.className == 'pro-container'){
+            return;
+        };
+
+        var proCard = target.closest('.pro');
+        var productId = proCard.id;
+
+        if(target.className == 'btn' || target.className == 'fa-solid fa-cart-shopping' || target == 'a'){
+            if(cart.length == 0){
+                cart.push(productId);
+                console.log(cart);
+            };
+
+            if(cart.some((x) => x == productId)){
+                console.log("Уже есть");
+            }else{
+                cart.push(productId);
+                console.log(cart);
+                localStorage.setItem('cart', cart);
+            };
+
+        }else{
+            window.location.href = 'http://localhost:8080/quantum/sProduct/' + productId;
+        };
+    });
+};
+/*Смена картинок в продукте*/
+var mainImg = document.getElementById("MainImg");
+var smallImg = document.getElementsByClassName("small-img");
+if(mainImg != null && smallImg != null) {
+    smallImg[0].onclick = function() {
+        mainImg.src = smallImg[0].src;
+    };
+    smallImg[1].onclick = function() {
+        mainImg.src = smallImg[1].src;
+    };
+    smallImg[2].onclick = function() {
+        mainImg.src = smallImg[2].src;
+    };
+    smallImg[3].onclick = function() {
+        mainImg.src = smallImg[3].src;
+    };
+};
+
+
 
 
