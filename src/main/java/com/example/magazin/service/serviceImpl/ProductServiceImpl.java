@@ -109,4 +109,18 @@ public class ProductServiceImpl implements ProductService {
                                 products.size());
     }
 
+    @Override
+    public List<ProductForMainDto> getProductsByIdList(List<Integer> productsId){
+        return productRepository.findAllById(productsId).stream()
+                .map(product -> ProductForMainDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .title(product.getTitle())
+                        .price(product.getPrice())
+                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                        .categoryDto(categoryMapper.toDto(product.getCategory()))
+                        .build())
+                .toList();
+    }
+
 }

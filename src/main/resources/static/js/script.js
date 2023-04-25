@@ -44,10 +44,19 @@ var currentUrl = window.location.href;
 
 for (var i = 0; i < headersLinks.length; i++) {
     headersLinks[i].classList.remove("active");
-    if(headersLinks[i].href == currentUrl){
+
+    var linkLength = headersLinks[i].href.length;
+    var splitUrl = currentUrl.substring(0, linkLength);
+
+    if(headersLinks[i].href == splitUrl){
         headersLinks[i].classList.add("active");
     };
 };
+
+if(currentUrl.includes('cart/products/')){
+    var a = document.getElementById('cartLink');
+    a.classList.add("active");
+}
 
 /*Запрос на получение продуктов по категории*/
 const shopCatalog = document.getElementById('shop-catalog');
@@ -78,6 +87,7 @@ const proContainer = document.getElementById('pro-container');
 if(proContainer != null) {
     let cart = [];
     proContainer.addEventListener("click", (event) => {
+        event.preventDefault();
         var target = event.target;
         if(target.className == 'pro-container'){
             return;
@@ -88,16 +98,16 @@ if(proContainer != null) {
 
         if(target.className == 'btn' || target.className == 'fa-solid fa-cart-shopping' || target == 'a'){
             if(cart.length == 0){
-                cart.push(productId);
+                cart.push(Number(productId));
                 console.log(cart);
             };
 
             if(cart.some((x) => x == productId)){
                 console.log("Уже есть");
             }else{
-                cart.push(productId);
-                console.log(cart);
-                localStorage.setItem('cart', cart);
+                cart.push(Number(productId));
+                var json = JSON.stringify(cart);
+                localStorage.setItem('cart', json);
             };
 
         }else{
@@ -122,6 +132,21 @@ if(mainImg != null && smallImg != null) {
         mainImg.src = smallImg[3].src;
     };
 };
+
+/*Передача данных о продукте при запросе корзины*/
+const headerNuv = document.getElementById('navbar');
+
+headerNuv.addEventListener("click", (event) => {
+    var target = event.target;
+    var ids;
+    if(target.className == 'fa-solid fa-cart-shopping'){
+        ids = localStorage.getItem('cart');
+        console.log(ids);
+        str = ids.slice(1, ids.length - 1);
+        console.log(str);
+        window.location.href = 'http://localhost:8080/quantum/cart/products/' + str;
+    };
+});
 
 
 
