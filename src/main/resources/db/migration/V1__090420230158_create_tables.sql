@@ -1,3 +1,11 @@
+CREATE TABLE `coupons` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `name` varchar(100) NOT NULL,
+    `percent` decimal(38,2) NOT NULL,
+    `active_until` datetime(6) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `subscribes` (
     `id` int NOT NULL AUTO_INCREMENT,
     `email` varchar(100) NOT NULL,

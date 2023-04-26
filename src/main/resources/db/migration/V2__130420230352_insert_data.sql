@@ -1,3 +1,9 @@
+INSERT coupons (id, name, percent, active_until)
+VALUES (1, 'qwe', '20.00', '2023-10-15 10:15:30.55'),
+       (2, 'qweqweqweqw', '10.00', '2023-10-15 10:15:30.55'),
+       (3, 'qweasdasasd', '5.00', '2023-10-15 10:15:30.55'),
+       (4, 'qweassadasd', '3.00', '2023-01-15 10:15:30.55');
+
 INSERT categories (id, src, image, name)
 VALUES (1, '/quantum/cullers', 'images/categories/culler.jpg', 'Системы охлаждения'),
        (2, '/quantum/monitors', 'images/categories/monitor.jpg', 'Мониторы'),

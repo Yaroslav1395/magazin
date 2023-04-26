@@ -17,6 +17,7 @@ public interface ProductService {
    Product save(Product product);
    List<Product> saveAll(List<Product> products);
    boolean delete(Product product);
+   List<ProductForMainDto> getProductsByIdList(List<Integer> productsId);
 
 
    List<ProductForMainDto> getMostExpensiveProductInEachCategoryWithLimitFour();
