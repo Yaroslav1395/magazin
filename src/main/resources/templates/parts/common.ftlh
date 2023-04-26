@@ -41,7 +41,7 @@
                 </p>
             </div>
             <div class="form">
-                <form method="POST" id="subscribe-form">
+                <form id="subscribe-form">
                      <input name="email" type="email" placeholder="Your email address">
                      <button class="normal" type="submit">Sign Up</button>
                 </form>
