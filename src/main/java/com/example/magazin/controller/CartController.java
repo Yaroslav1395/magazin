@@ -58,4 +58,9 @@ public class CartController {
         model.addAttribute("coupon", couponDto);
         return "cart";
     }
+
+    @GetMapping("/products")
+    public String getCart(){
+        return "cart";
+    }
 }

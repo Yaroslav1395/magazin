@@ -1216,6 +1216,16 @@ footer a:hover {
     text-align: center;
 }
 
+#prodetails .single-pro-details input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+    cursor: pointer;
+    display: block;
+    width: 80px;
+    color: #333;
+    text-align: center;
+    position: relative;
+}
+
 #prodetails .single-pro-details input:focus {
     outline: none;
 }
@@ -1233,6 +1243,157 @@ footer a:hover {
 .comapany img {
     max-width: 200px;
     max-height: 50px;
+}
+
+#analog {
+    display: flex;
+}
+
+.comments {
+    margin-top: 40px;
+}
+
+.comment {
+    border-bottom: 1px solid #088178;
+    margin-bottom: 15px;
+}
+
+.user-data {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.user p {
+    margin: 0;
+    color: #4B0082;
+    font-weight: bold;
+}
+
+.data p {
+    margin: 0;
+    color: #4B0082;
+    font-weight: bold;
+}
+
+.add-comment {
+    max-width: 500px;
+}
+
+.add-comment form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-comment textarea {
+    width: 500px;
+    height: 100px;
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 17px;
+}
+
+.add-comment textarea:focus {
+    outline: none !important;
+    border: 2px solid #1CD3A2;
+}
+
+.add-comment button {
+    width: 150px;
+    height: 50px;
+    color: #fff;
+    background-color: #4B0082;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    border-radius: 5px;
+    letter-spacing: 2px
+}
+
+.add-comment button:hover {
+    color: #1CD3A2;
+}
+
+/**************************************Продукт. Конец.******************************************************/
+
+/****************************************Блог. Начало.******************************************************/
+#page-header.blog-header {
+    background-image: url("images/banners/news-banner.jpg");
+    height: 50vh;
+}
+
+#page-header.blog-header {
+    text-align: right;
+    margin-right: 40px;
+}
+
+#hero-contant {
+    margin-right: 80px;
+}
+
+#blog {
+    padding: 150px 150px 0 150px;
+}
+
+#blog .blog-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+#blog .blog-img {
+    width: 50%;
+    margin-right: 40px;
+}
+
+#blog img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+#blog .blog-details {
+    width: 50%;
+}
+
+#blog .blog-details a {
+    text-decoration: none;
+    font-size: 11px;
+    color: #000;
+    font-weight: 700;
+    position: relative;
+    text-transform: uppercase;
+}
+
+#blog .blog-details a:hover {
+    color: #088187;
+}
+
+#blog .blog-details a:hover::after {
+    background-color: #088178;
+}
+
+#blog .blog-details a::after {
+    content: "";
+    width: 50px;
+    height: 1px;
+    background-color: #000;
+    position: absolute;
+    top: 5px;
+    right: -60px;
+}
+
+#blog .blog-box h1 {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    font-size: 70px;
+    font-weight: 700;
+    color: #c9cbce;
+    z-index: -1;
 }
 /**************************************Продукт. Конец.******************************************************/
 
