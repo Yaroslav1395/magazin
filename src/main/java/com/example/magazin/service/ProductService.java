@@ -3,6 +3,7 @@ package com.example.magazin.service;
 import com.example.magazin.dto.product.ProductForMainDto;
 import com.example.magazin.dto.product.ProductForSingleDto;
 import com.example.magazin.entity.product.Product;
+import com.example.magazin.repository.ProductInOrderCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,4 +24,5 @@ public interface ProductService {
    List<ProductForMainDto> getMostExpensiveProductInEachCategoryWithLimitFour();
    List<ProductForMainDto> getFirst8ByOrderByReceiptDate();
    Page<ProductForMainDto> getAllProductsByCategoryId(Pageable pageable, Integer id);
+   List<ProductForMainDto> getFourBestSellingProductsByCategory(Integer categoryId);
 }

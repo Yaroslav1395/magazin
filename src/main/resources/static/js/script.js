@@ -54,7 +54,7 @@ for (var i = 0; i < headersLinks.length; i++) {
     };
 };
 
-if(currentUrl.includes('cart/products/')){
+if(currentUrl.includes('cart/products')){
     var a = document.getElementById('cartLink');
     a.classList.add("active");
 }
@@ -142,8 +142,15 @@ headerNuv.addEventListener("click", (event) => {
     var ids;
     if(target.className == 'fa-solid fa-cart-shopping'){
         ids = localStorage.getItem('cart');
+        console.log(ids);
         str = ids.slice(1, ids.length - 1);
-        window.location.href = 'http://localhost:8080/quantum/cart/products/' + str;
+        console.log(str);
+        if(str != null && str.length > 2){
+            window.location.href = 'http://localhost:8080/quantum/cart/products/' + str;
+        }else{
+            window.location.href = 'http://localhost:8080/quantum/cart/products';
+        }
+
     };
 });
 
@@ -191,14 +198,12 @@ function removeProduct(id){
 
 /*Функция пересчета заказа*/
 function orderRecalculation(tableBody){
-    console.log("----------------------")
     var discountTr = document.getElementById("discount");
     var discount = 0;
     if(discountTr.textContent != null){
         discount = discountTr.textContent.substring(0, discountTr.textContent.search(" %"));
         console.log(discountTr);
     }
-    console.log("----------------------")
     var trElements = tableBody.getElementsByTagName("tr");
     var orderSum = 0;
     for(let i = 0; i < trElements.length; i++){

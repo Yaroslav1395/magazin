@@ -17,7 +17,9 @@ public class SingleProductController {
     @GetMapping("/{id}")
     public String getSingleProduct(@PathVariable Integer id, Model model){
         ProductForSingleDto productForSingleDto = productService.getProductById(id);
+        int categoryId = productForSingleDto.getCategoryDto().getId();
         model.addAttribute("product", productForSingleDto);
+        model.addAttribute("products", productService.getFourBestSellingProductsByCategory(categoryId));
         return "sproduct";
     }
 }
