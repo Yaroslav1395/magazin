@@ -2,6 +2,7 @@ package com.example.magazin.service.serviceImpl;
 
 import com.example.magazin.dto.mappers.*;
 import com.example.magazin.dto.product.ProductForMainDto;
+import com.example.magazin.dto.product.ProductForSaveDto;
 import com.example.magazin.dto.product.ProductForSingleDto;
 import com.example.magazin.dto.review.ReviewDto;
 import com.example.magazin.entity.product.Product;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,8 +31,14 @@ public class ProductServiceImpl implements ProductService {
     private UserMapper userMapper;
 
     public ProductForSingleDto getProductById(Integer id){
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
+        Product product;
+        try {
+            product = productRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
+        }catch (ResourceNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
 
         return ProductForSingleDto.builder()
                 .id(product.getId())
@@ -54,24 +62,102 @@ public class ProductServiceImpl implements ProductService {
     public boolean existsById(Integer id){
         return productRepository.existsById(id);
     }
-    public Page<Product> getAllPageable(Pageable pageable){
-        return productRepository.findAll(pageable);
+    public Page<ProductForMainDto> getAllProductsPageable(Pageable pageable){
+        List<ProductForMainDto> products =  productRepository.findAll().stream()
+                .map(product -> ProductForMainDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .title(product.getTitle())
+                        .price(product.getPrice())
+                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                        .categoryDto(categoryMapper.toDto(product.getCategory()))
+                        .build())
+                .toList();
+
+        final int toIndex = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(),
+                products.size());
+        final int fromIndex = Math.max(toIndex - pageable.getPageSize(), 0);
+
+        return new PageImpl<ProductForMainDto>(
+                products.subList(fromIndex, toIndex),
+                pageable,
+                products.size());
     }
-    public List<Product> getAll(){
-        return productRepository.findAll();
-    }
-    public Product save(Product product){
-        return productRepository.save(product);
-    }
-    public List<Product> saveAll(List<Product> products){
-        return  productRepository.saveAll(products);
-    }
-    public boolean delete(Product product){
-        productRepository.delete(product);
-        return !existsById(product.getId());
+    public List<ProductForMainDto> getAll(){
+        return productRepository.findAll().stream()
+                .map(product -> ProductForMainDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .title(product.getTitle())
+                        .price(product.getPrice())
+                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                        .categoryDto(categoryMapper.toDto(product.getCategory()))
+                        .build())
+                .toList();
     }
 
+    public ProductForSaveDto save(ProductForSaveDto productForSaveDto){
+        Product product = Product.builder()
+                .name(productForSaveDto.getName())
+                .title(productForSaveDto.getTitle())
+                .description(productForSaveDto.getDescription())
+                .amount(1)
+                .price(productForSaveDto.getPrice())
+                .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
+                .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
+                .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
+                .build();
 
+        Product saveProduct = productRepository.save(product);
+
+        return ProductForSaveDto.builder()
+                .name(saveProduct.getName())
+                .title(saveProduct.getTitle())
+                .description(saveProduct.getDescription())
+                .price(saveProduct.getPrice())
+                .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
+                .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
+                .companyDto(companyMapper.toDto(saveProduct.getCompany()))
+                .build();
+    }
+    public List<ProductForSaveDto> saveAll(List<ProductForSaveDto> products){
+        List<Product> productList = products.stream()
+                .map(productForSaveDto -> Product.builder()
+                        .name(productForSaveDto.getName())
+                        .title(productForSaveDto.getTitle())
+                        .description(productForSaveDto.getDescription())
+                        .amount(1)
+                        .price(productForSaveDto.getPrice())
+                        .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
+                        .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
+                        .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
+                        .build())
+                .toList();
+        List<Product> saveProducts = productRepository.saveAll(productList);
+        return saveProducts.stream()
+                .map(saveProduct -> ProductForSaveDto.builder()
+                    .name(saveProduct.getName())
+                    .title(saveProduct.getTitle())
+                    .description(saveProduct.getDescription())
+                    .price(saveProduct.getPrice())
+                    .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
+                    .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
+                    .companyDto(companyMapper.toDto(saveProduct.getCompany()))
+                    .build())
+                .collect(Collectors.toList());
+    }
+    public boolean deleteById(Integer id){
+        Product product;
+        try {
+            product = productRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found."));
+            productRepository.deleteById(id);
+            return true;
+        }catch (ResourceNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     @Override
     public List<ProductForMainDto> getMostExpensiveProductInEachCategoryWithLimitFour() {

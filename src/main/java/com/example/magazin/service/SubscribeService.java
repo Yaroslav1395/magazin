@@ -12,15 +12,8 @@ import java.util.Optional;
 
 public interface SubscribeService {
     List<SubscribeDto> getAllSubscribes();
-
-    List<String> getAllSubscribesEmail();
-
-    Optional<Subscribe> getSubscribeById(Integer id);
-
-    Optional<String> getSubscribeNameById(Integer id);
-
-    String deleteSubscribeById(Integer id);
-    SubscribeDto getByEmail(String email);
-
-    SubscribeDto createSubscribe(String email);
+    SubscribeDto getSubscribeById(Integer id);
+    SubscribeDto getSubscribeByEmail(String email);
+    boolean deleteSubscribeById(Integer id);
+    SubscribeDto saveSubscribe(String email);
 }
