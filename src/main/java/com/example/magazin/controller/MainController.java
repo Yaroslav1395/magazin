@@ -32,7 +32,7 @@ public class MainController {
 
     @PostMapping()
     public String subscribeForNews(@RequestBody String email, Model model){
-        subscribeService.createSubscribe(email);
+        subscribeService.saveSubscribe(email);
         List<ProductForMainDto> recommendedProducts =
                 productService.getMostExpensiveProductInEachCategoryWithLimitFour();
         List<ProductForMainDto> newProducts = productService.getFirst8ByOrderByReceiptDate();

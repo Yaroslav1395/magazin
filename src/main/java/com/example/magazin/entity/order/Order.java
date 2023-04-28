@@ -4,6 +4,7 @@ import com.example.magazin.entity.product.Product;
 import com.example.magazin.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 @Entity
 @Table(name = "orders")
 @AllArgsConstructor
