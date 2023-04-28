@@ -70,7 +70,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<CouponDto> getCouponsByNames(List<String> names) {
-        List<Coupon> coupons = couponRepository.findAllByName(names).stream()
+        List<Coupon> coupons = couponRepository.findByNameIn(names).stream()
                 .peek(coupon -> coupon.setActive(coupon.getActiveUntil().isAfter(LocalDateTime.now())))
                 .toList();
         return coupons.stream()

@@ -66,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getCategoriesByNames(List<String> names) {
-        List<Category> categoryList = categoryRepository.findAllByName(names);
+        List<Category> categoryList = categoryRepository.findByNameIn(names);
         return categoryList.stream()
                 .map(category -> categoryMapper.toDto(category))
                 .collect(Collectors.toList());

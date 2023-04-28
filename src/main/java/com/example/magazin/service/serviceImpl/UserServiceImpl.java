@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
-    public UserDto getUserByName(String name){
+    public UserDto getUserByName(String lastName){
         User user;
         try {
-            user = userRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            user = userRepository.findByLastName(lastName).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         }catch (ResourceNotFoundException e){
             e.printStackTrace();
             return null;
@@ -63,12 +63,12 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
     public List<UserDto> getUsersByEmails(List<String> emails){
-        return userRepository.findAllByEmail(emails).stream()
+        return userRepository.findByEmailIn(emails).stream()
                 .map(user -> userMapper.toDto(user))
                 .collect(Collectors.toList());
     }
-    public List<UserDto> getUsersByNames(List<String> names){
-        return userRepository.findAllByName(names).stream()
+    public List<UserDto> getUsersByNames(List<String> lastNames){
+        return userRepository.findByLastNameIn(lastNames).stream()
                 .map(user -> userMapper.toDto(user))
                 .collect(Collectors.toList());
     }

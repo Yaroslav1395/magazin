@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
     Optional<Coupon> findByName(String name);
-    List<Coupon> findAllByName(List<String> names);
+    List<Coupon> findByNameIn(List<String> names);
 }
