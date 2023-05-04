@@ -1,15 +1,39 @@
-<#import "parts/common.ftlh" as c>
+<#import "parts/head.ftlh" as h>
+<#import "parts/header.ftlh" as hr>
+<#import "parts/bannerMain.ftlh" as bm>
+<#import "parts/future.ftlh" as fu>
+<#import "parts/service.ftlh" as se>
 <#import "parts/recommended.ftlh" as r>
 <#import "parts/new.ftlh" as n>
+<#import "parts/subscribe.ftlh" as s>
+<#import "parts/coupons.ftlh" as c>
+<#import "parts/footer.ftlh" as f>
+<#import "/spring.ftl" as spring />
+<#import "parts/message.ftlh" as m>
 
-<@c.page>
+<@h.page>
+    <@hr.page>
+    </@hr.page>
+
+    <#if message??>
+        <@m.page>
+            <p>${message}</p>
+        </@m.page>
+    </#if>
+
+    <@bm.page>
+    </@bm.page>
+
+    <@fu.page >
+    </@fu.page>
+
     <@r.page>
-       <#assign count = 0>
-       <#assign countOne = 1>
-       <#assign category = ''>
-       <#list products as product>
-           <#assign count = count + 1>
-           <#if products[countOne]??>
+        <#assign count = 0>
+        <#assign countOne = 1>
+        <#assign category = ''>
+        <#list products as product>
+            <#assign count = count + 1>
+            <#if products[countOne]??>
                 <#assign category = products[countOne].categoryDto.name>
                 <#if product.categoryDto.name != category || countOne == 1>
                     <div id="recommended-category">
@@ -43,17 +67,21 @@
                                         <div class="btn"><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></div>
                                     </div>
                                 </div>
-                                 <#assign countTwo = countTwo + 1>
+                                <#assign countTwo = countTwo + 1>
                             </#list>
                         </div>
                     </div>
                 </#if>
-           <#else>
+            <#else>
                 <#break>
-           </#if>
-           <#assign countOne = countOne + 1>
-       </#list>
+            </#if>
+            <#assign countOne = countOne + 1>
+        </#list>
     </@r.page>
+
+    <@se.page>
+    </@se.page>
+
     <@n.page>
         <#list newProducts as product>
             <div class="pro">
@@ -76,5 +104,19 @@
             </div>
         </#list>
     </@n.page>
-</@c.page>
+
+    <@s.page>
+         <div>
+            <@spring.formInput "subscribeDto.email" "type='email'" "placeholder='Your email adress'"/>
+            <@spring.showErrors "<br>"/>
+         </div>
+    </@s.page>
+
+    <@c.page>
+    </@c.page>
+
+    <@f.page>
+    </@f.page>
+</@h.page>
+
 

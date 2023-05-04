@@ -37,6 +37,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "order by amount desc\n" +
             "limit 4;")
     List<ProductInOrderCount> findFourBestSellingProductsByCategory(Integer categoryId);
+    @Query("SELECT p FROM Product p WHERE CONCAT(p.name, p.category.name, p.company.name) LIKE %?1%")
+    List<Product> findProductByKeyword(String keyword);
 
     List<Product> findFirst8ByOrderByReceiptDateDesc();
     List<Product> findByCategoryId(Integer id);

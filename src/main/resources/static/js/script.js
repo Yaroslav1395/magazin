@@ -1,24 +1,8 @@
-/*Отправка подписки на сервер*/
-const subscribeForm = document.getElementById("subscribe-form");
 
-subscribeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    subscribeFormSubmitHandler(event.target);
-});
-
-function subscribeFormSubmitHandler(loginForm){
-    const formData  = new FormData(loginForm);
-    sendSubscribeData(formData);
-};
-
-function sendSubscribeData(formData){
-    const email = formData.get("email");
-
-    axios.post("http://localhost:8080/quantum/main", email,
-        {headers: {'Content-Type': 'multipart/form-data'}
-    })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+/**Очистка формы подписки**/
+const input = document.getElementById("email");
+if(input != null){
+    input.value = "";
 };
 
 /*Кнопка открытия и закрытия меню для экранов до 800px*/
@@ -67,21 +51,20 @@ if(shopCatalog != null){
         var productCell = target.closest(".cell");
         var categoryId = productCell.id;
 
-        window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId + "?products=0";
+        window.location.href = 'http://localhost:8080/quantum/shop/category/' +
+                                                            categoryId + "?pageNumber=0&sortDir=asc&sortField=id";
     });
 };
 
-/*Запрос на получение продуктов по категории из боковой навигации*/
-const catalog = document.getElementById('catalog-ul');
-
-if(catalog != null){
-    catalog.addEventListener("click", (event) => {
-        var target = event.target;
-        var li = target.closest("li");
-        var categoryId = li.id;
-        window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId + "?products=0";
-    });
-};
+/*Очистка поисковой формы*/
+const clearFormBtn = document.getElementById('clearFormBtn');
+if(clearFormBtn != null){
+    clearFormBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        var searchInput = document.getElementById('searchInput');
+        searchInput.value="";
+    })
+}
 
 /*Переход к информации о продукте при клике на карточку или добавление в корзину*/
 const proContainer = document.getElementById('pro-container');
@@ -156,7 +139,6 @@ headerNuv.addEventListener("click", (event) => {
 
 /*Изменение общей стоимости продукта исходя из количества и удаление продукта*/
 const tableBody = document.getElementById("tableBody");
-console.log(tableBody);
 if(tableBody != null){
     orderRecalculation(tableBody);
     tableBody.addEventListener("click", (event) => {
@@ -229,7 +211,6 @@ function orderRecalculation(tableBody){
 
 /*Отправка купона*/
 const couponForm = document.getElementById("couponForm");
-console.log(couponForm)
 if(couponForm != null){
     couponForm.addEventListener("submit", (event) => {
         event.preventDefault();

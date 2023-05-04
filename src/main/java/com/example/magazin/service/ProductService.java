@@ -23,4 +23,5 @@ public interface ProductService {
    List<ProductForMainDto> getFirst8ByOrderByReceiptDate();
    Page<ProductForMainDto> getAllProductsByCategoryId(Pageable pageable, Integer id);
    List<ProductForMainDto> getFourBestSellingProductsByCategory(Integer categoryId);
+   Page<ProductForMainDto> getProductByKeyword(Pageable pageable, String keyword);
 }

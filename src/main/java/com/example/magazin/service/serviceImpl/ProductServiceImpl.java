@@ -11,12 +11,14 @@ import com.example.magazin.repository.ProductInOrderCount;
 import com.example.magazin.repository.product.ProductRepository;
 import com.example.magazin.repository.review.ReviewRepository;
 import com.example.magazin.service.ProductService;
+import com.example.magazin.service.sort.ProductSortType;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -189,27 +191,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductForMainDto> getAllProductsByCategoryId(Pageable pageable, Integer id) {
-        List<ProductForMainDto> products =  productRepository.findByCategoryId(id).stream()
-                .map(product -> ProductForMainDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .title(product.getTitle())
-                        .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
-                        .categoryDto(categoryMapper.toDto(product.getCategory()))
-                        .build())
-                .toList();
+        List<Product> products = productRepository.findByCategoryId(id);
+        List<ProductForMainDto> productForMainDtos = buildingListProductForMainDtoFromProducts(products);
 
-        final int toIndex = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(),
-                products.size());
-        final int fromIndex = Math.max(toIndex - pageable.getPageSize(), 0);
-
-        return new PageImpl<ProductForMainDto>(
-                                products.subList(fromIndex, toIndex),
-                                pageable,
-                                products.size());
+        return getPageListOfProducts(pageable, productForMainDtos);
     }
-
     @Override
     public List<ProductForMainDto> getFourBestSellingProductsByCategory(Integer categoryId) {
         List<Integer> productsId = productRepository.findFourBestSellingProductsByCategory(categoryId).stream()
@@ -229,6 +215,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<ProductForMainDto> getProductByKeyword(Pageable pageable, String keyword) {
+        List<Product> products = productRepository.findProductByKeyword(keyword);
+        List<ProductForMainDto> productForMainDtos = buildingListProductForMainDtoFromProducts(products);
+        return getPageListOfProducts(pageable, productForMainDtos);
+    }
+
+    @Override
     public List<ProductForMainDto> getProductsByIdList(List<Integer> productsId){
         return productRepository.findAllById(productsId).stream()
                 .map(product -> ProductForMainDto.builder()
@@ -242,4 +235,42 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+
+
+
+    private Page<ProductForMainDto> getPageListOfProducts(Pageable pageable, List<ProductForMainDto> products){
+        final int toIndex = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(),
+                products.size());
+        final int fromIndex = Math.max(toIndex - pageable.getPageSize(), 0);
+        List<ProductForMainDto> sortedProducts;
+
+        try {
+            sortedProducts = ProductSortType.getProductSortType(pageable.getSort().toString())
+                                                                                .getProductSort().sortProduct(products);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            return new PageImpl<ProductForMainDto>(
+                    products.subList(fromIndex, toIndex),
+                    pageable,
+                    products.size());
+        }
+
+        return new PageImpl<ProductForMainDto>(
+                sortedProducts.subList(fromIndex, toIndex),
+                pageable,
+                products.size());
+    }
+
+    private List<ProductForMainDto> buildingListProductForMainDtoFromProducts(List<Product> products){
+        return products.stream()
+                .map(product -> ProductForMainDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .title(product.getTitle())
+                        .price(product.getPrice())
+                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                        .categoryDto(categoryMapper.toDto(product.getCategory()))
+                        .build())
+                .toList();
+    }
 }
