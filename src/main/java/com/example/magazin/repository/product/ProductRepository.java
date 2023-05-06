@@ -3,11 +3,14 @@ package com.example.magazin.repository.product;
 import com.example.magazin.dto.product.ProductForMainDto;
 import com.example.magazin.entity.product.Product;
 import com.example.magazin.repository.ProductInOrderCount;
+import com.example.magazin.repository.ProductPrice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -37,12 +40,28 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "order by amount desc\n" +
             "limit 4;")
     List<ProductInOrderCount> findFourBestSellingProductsByCategory(Integer categoryId);
-    @Query("SELECT p FROM Product p WHERE CONCAT(p.name, p.category.name, p.company.name) LIKE %?1%")
-    List<Product> findProductByKeyword(String keyword);
-
     List<Product> findFirst8ByOrderByReceiptDateDesc();
     List<Product> findByCategoryId(Integer id);
+    @Query("SELECT p FROM Product p WHERE CONCAT(p.name, p.category.name, p.company.name) LIKE %?1%")
+    List<Product> findProductByKeyword(String keyword);
+    @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId AND p.price BETWEEN :min AND :max")
+    List<Product> findProductByCategoryIdWithPriceLimit(
+            @Param("min") BigDecimal min, @Param("max") BigDecimal max, @Param("categoryId") Integer categoryId);
+    @Query("SELECT p FROM Product p WHERE CONCAT(p.name, p.category.name, p.company.name) " +
+            "LIKE %:keyword% AND p.price BETWEEN :min AND :max")
+    List<Product> findProductByKeywordWithPriceLimit(
+            @Param("min") BigDecimal min, @Param("max") BigDecimal max, @Param("keyword") String keyword);
+    @Query("SELECT p FROM Product p WHERE CONCAT(p.name, p.category.name, p.company.name) " +
+            "LIKE %:keyword% ORDER BY p.price DESC LIMIT 1")
+    ProductPrice findMaxPriceOfProductByKeyword(@Param("keyword") String keyword);
+    @Query("SELECT p FROM Product p WHERE CONCAT(p.name, p.category.name, p.company.name) " +
+            "LIKE %:keyword% ORDER BY p.price ASC LIMIT 1")
+    ProductPrice findMinPriceOfProductByKeyword(@Param("keyword") String keyword);
+    ProductPrice findFirstByOrderByPriceDesc();
+    ProductPrice findFirstByOrderByPriceAsc();
 
+    ProductPrice findFirstByCategoryIdOrderByPriceDesc(Integer id);
+    ProductPrice findFirstByCategoryIdOrderByPriceAsc(Integer id);
 
 
 }

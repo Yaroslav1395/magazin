@@ -66,6 +66,64 @@ if(clearFormBtn != null){
     })
 }
 
+/**Работа слaйдера*/
+const rangeInput = document.querySelectorAll(".range-input input");
+const priceInput = document.querySelectorAll(".price-input input");
+const progress = document.querySelector(".slider .progress");
+let priceGap;
+let minVal = parseInt(priceInput[0].value);
+let maxVal = parseInt(priceInput[1].value);
+
+progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+
+if(rangeInput[1].max > 50000){
+    priceGap = 5000;
+}else if(rangeInput[1].max > 400000){
+    priceGap = 50000;
+}else{
+    priceGap = 500;
+}
+
+if(priceInput !=null){
+    priceInput.forEach(input => {
+        input.addEventListener("input", e => {
+            let minVal = parseInt(priceInput[0].value);
+            let maxVal = parseInt(priceInput[1].value);
+
+            if((maxVal - minVal >= priceGap) && maxVal <= rangeInput[1].value){
+                if(e.target.className === "input-min"){
+                    rangeInput[0].value = minVal;
+                    progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                }else{
+                    rangeInput[1].value = maxVal;
+                    progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+                }
+            }
+        });
+    });
+
+    rangeInput.forEach(input => {
+        input.addEventListener("input", e => {
+            let minVal = parseInt(rangeInput[0].value);
+            let maxVal = parseInt(rangeInput[1].value);
+
+            if(maxVal - minVal < priceGap){
+                if(e.target.className === "range-min"){
+                    rangeInput[0].value = maxVal - priceGap;
+                }else{
+                    rangeInput[1].value = minVal + priceGap;
+                }
+            }else{
+                priceInput[0].value = minVal;
+                priceInput[1].value = maxVal;
+                progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+            }
+        });
+    });
+};
+
 /*Переход к информации о продукте при клике на карточку или добавление в корзину*/
 const proContainer = document.getElementById('pro-container');
 if(proContainer != null) {

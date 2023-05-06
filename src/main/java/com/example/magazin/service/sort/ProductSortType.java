@@ -4,7 +4,9 @@ public enum ProductSortType {
     PRODUCT_SORT_BY_NAME_ASC("name: ASC", new ProductSortByNameAscImpl()),
     PRODUCT_SORT_BY_NAME_DESC("name: DESC", new ProductSortByNameDescImpl()),
     PRODUCT_SORT_BY_PRICE_ASC("price: ASC", new ProductSortByPriceAscImpl()),
-    PRODUCT_SORT_BY_PRICE_DESC("price: DESC", new ProductSortByPriceDescImpl());
+    PRODUCT_SORT_BY_PRICE_DESC("price: DESC", new ProductSortByPriceDescImpl()),
+    PRODUCT_SORT_BY_ID_ASC("id: ASC", new ProductSortByIdAscImpl()),
+    PRODUCT_SORT_BY_ID_DESC("id: DESC", new ProductSortByIdDescImpl());
 
     private String sortParam;
     private ProductSort productSort;

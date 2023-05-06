@@ -13,11 +13,10 @@ import com.example.magazin.repository.review.ReviewRepository;
 import com.example.magazin.service.ProductService;
 import com.example.magazin.service.sort.ProductSortType;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,40 +41,13 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
 
-        return ProductForSingleDto.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .title(product.getTitle())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .companyDto(companyMapper.toDto(product.getCompany()))
-                .categoryDto(categoryMapper.toDto(product.getCategory()))
-                .productImageDto(productImageMapper.toDto(product.getProductImage()))
-                .reviewDtoList(product.getReviews().stream()
-                        .map(review -> ReviewDto.builder()
-                                .message(review.getMessage())
-                                .dateTime(review.getDateTime())
-                                .id(review.getId())
-                                .userDto(userMapper.toDto(review.getUser()))
-                                .build())
-                        .toList())
-                .build();
+        return buildingProductForSingleDtoFromProduct(product);
     }
     public boolean existsById(Integer id){
         return productRepository.existsById(id);
     }
     public Page<ProductForMainDto> getAllProductsPageable(Pageable pageable){
-        List<ProductForMainDto> products =  productRepository.findAll().stream()
-                .map(product -> ProductForMainDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .title(product.getTitle())
-                        .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
-                        .categoryDto(categoryMapper.toDto(product.getCategory()))
-                        .build())
-                .toList();
-
+        List<ProductForMainDto> products = buildingListProductForMainDtoFromProducts(productRepository.findAll());
         final int toIndex = Math.min((pageable.getPageNumber() + 1) * pageable.getPageSize(),
                 products.size());
         final int fromIndex = Math.max(toIndex - pageable.getPageSize(), 0);
@@ -86,67 +58,20 @@ public class ProductServiceImpl implements ProductService {
                 products.size());
     }
     public List<ProductForMainDto> getAll(){
-        return productRepository.findAll().stream()
-                .map(product -> ProductForMainDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .title(product.getTitle())
-                        .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
-                        .categoryDto(categoryMapper.toDto(product.getCategory()))
-                        .build())
-                .toList();
+        return buildingListProductForMainDtoFromProducts(productRepository.findAll());
     }
 
     public ProductForSaveDto save(ProductForSaveDto productForSaveDto){
-        Product product = Product.builder()
-                .name(productForSaveDto.getName())
-                .title(productForSaveDto.getTitle())
-                .description(productForSaveDto.getDescription())
-                .amount(1)
-                .price(productForSaveDto.getPrice())
-                .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
-                .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
-                .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
-                .build();
+        Product product = buildingProductFromProductForSaveDto(productForSaveDto);
 
         Product saveProduct = productRepository.save(product);
 
-        return ProductForSaveDto.builder()
-                .name(saveProduct.getName())
-                .title(saveProduct.getTitle())
-                .description(saveProduct.getDescription())
-                .price(saveProduct.getPrice())
-                .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
-                .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
-                .companyDto(companyMapper.toDto(saveProduct.getCompany()))
-                .build();
+        return buildingProductFromProductForSaveDto(saveProduct);
     }
     public List<ProductForSaveDto> saveAll(List<ProductForSaveDto> products){
-        List<Product> productList = products.stream()
-                .map(productForSaveDto -> Product.builder()
-                        .name(productForSaveDto.getName())
-                        .title(productForSaveDto.getTitle())
-                        .description(productForSaveDto.getDescription())
-                        .amount(1)
-                        .price(productForSaveDto.getPrice())
-                        .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
-                        .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
-                        .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
-                        .build())
-                .toList();
+        List<Product> productList = buildingProductsFromProductsForSave(products);
         List<Product> saveProducts = productRepository.saveAll(productList);
-        return saveProducts.stream()
-                .map(saveProduct -> ProductForSaveDto.builder()
-                    .name(saveProduct.getName())
-                    .title(saveProduct.getTitle())
-                    .description(saveProduct.getDescription())
-                    .price(saveProduct.getPrice())
-                    .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
-                    .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
-                    .companyDto(companyMapper.toDto(saveProduct.getCompany()))
-                    .build())
-                .collect(Collectors.toList());
+        return buildingProductsForSaveFromProducts(saveProducts);
     }
     public boolean deleteById(Integer id){
         Product product;
@@ -163,30 +88,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductForMainDto> getMostExpensiveProductInEachCategoryWithLimitFour() {
-        return productRepository.findMostExpensiveProductInEachCategoryWithLimitFour().stream()
-                .map(product -> ProductForMainDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .title(product.getTitle())
-                        .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
-                        .categoryDto(categoryMapper.toDto(product.getCategory()))
-                        .build())
-                .toList();
+        return buildingListProductForMainDtoFromProducts(productRepository.findMostExpensiveProductInEachCategoryWithLimitFour());
     }
 
     @Override
     public List<ProductForMainDto> getFirst8ByOrderByReceiptDate() {
-        return productRepository.findFirst8ByOrderByReceiptDateDesc().stream()
-                .map(product -> ProductForMainDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .title(product.getTitle())
-                        .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
-                        .categoryDto(categoryMapper.toDto(product.getCategory()))
-                        .build())
-                .toList();
+        return buildingListProductForMainDtoFromProducts(productRepository.findFirst8ByOrderByReceiptDateDesc());
     }
 
     @Override
@@ -202,16 +109,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductInOrderCount::getProductId)
                 .toList();
 
-        return productRepository.findAllById(productsId).stream()
-                .map(product -> ProductForMainDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .title(product.getTitle())
-                        .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
-                        .categoryDto(categoryMapper.toDto(product.getCategory()))
-                        .build())
-                .toList();
+        return buildingListProductForMainDtoFromProducts(productRepository.findAllById(productsId));
     }
 
     @Override
@@ -219,6 +117,56 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findProductByKeyword(keyword);
         List<ProductForMainDto> productForMainDtos = buildingListProductForMainDtoFromProducts(products);
         return getPageListOfProducts(pageable, productForMainDtos);
+    }
+
+    @Override
+    public Page<ProductForMainDto> getProductByKeywordWithPriceLimit(Pageable pageable, String keyword, Double min, Double max) {
+        BigDecimal minPrice = BigDecimal.valueOf(min);
+        BigDecimal maxPrice = BigDecimal.valueOf(max);
+
+        List<Product> products = productRepository.findProductByKeywordWithPriceLimit(minPrice, maxPrice, keyword);
+        List<ProductForMainDto> productForMainDtos = buildingListProductForMainDtoFromProducts(products);
+        return getPageListOfProducts(pageable, productForMainDtos);
+    }
+
+    @Override
+    public Page<ProductForMainDto> getProductByCategoryIdWithPriceLimit(Pageable pageable, Integer categoryId, Double min, Double max) {
+        BigDecimal minPrice = BigDecimal.valueOf(min);
+        BigDecimal maxPrice = BigDecimal.valueOf(max);
+
+        List<Product> products = productRepository.findProductByCategoryIdWithPriceLimit(minPrice, maxPrice, categoryId);
+        List<ProductForMainDto> productForMainDtos = buildingListProductForMainDtoFromProducts(products);
+        return getPageListOfProducts(pageable, productForMainDtos);
+    }
+
+    @Override
+    public Double getMaxPriceInAllProducts() {
+        return productRepository.findFirstByOrderByPriceDesc().getPrice().doubleValue();
+    }
+
+    @Override
+    public Double getMinPriceInAllProducts() {
+        return productRepository.findFirstByOrderByPriceAsc().getPrice().doubleValue();
+    }
+
+    @Override
+    public Double getMaxProductPriceInCategory(Integer categoryId) {
+        return productRepository.findFirstByCategoryIdOrderByPriceDesc(categoryId).getPrice().doubleValue();
+    }
+
+    @Override
+    public Double getMinProductPriceInCategory(Integer categoryId) {
+        return productRepository.findFirstByCategoryIdOrderByPriceAsc(categoryId).getPrice().doubleValue();
+    }
+
+    @Override
+    public Double getMaxProductPriceByKeyword(String keyword) {
+        return productRepository.findMaxPriceOfProductByKeyword(keyword).getPrice().doubleValue();
+    }
+
+    @Override
+    public Double getMinProductPriceByKeyword(String keyword) {
+        return productRepository.findMinPriceOfProductByKeyword(keyword).getPrice().doubleValue();
     }
 
     @Override
@@ -234,6 +182,12 @@ public class ProductServiceImpl implements ProductService {
                         .build())
                 .toList();
     }
+    @Override
+    public Pageable createPageable(String sortField, String sortDir, Integer pageNumber){
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        return PageRequest.of(pageNumber, 6, sort);
+    }
 
 
 
@@ -247,6 +201,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             sortedProducts = ProductSortType.getProductSortType(pageable.getSort().toString())
                                                                                 .getProductSort().sortProduct(products);
+
         }catch (RuntimeException e){
             e.printStackTrace();
             return new PageImpl<ProductForMainDto>(
@@ -272,5 +227,89 @@ public class ProductServiceImpl implements ProductService {
                         .categoryDto(categoryMapper.toDto(product.getCategory()))
                         .build())
                 .toList();
+    }
+    private ProductForMainDto buildingProductForMainDtoFromProduct(Product product){
+        return ProductForMainDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .title(product.getTitle())
+                .price(product.getPrice())
+                .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                .categoryDto(categoryMapper.toDto(product.getCategory()))
+                .build();
+    }
+    private ProductForSingleDto buildingProductForSingleDtoFromProduct(Product product){
+        return ProductForSingleDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .title(product.getTitle())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .companyDto(companyMapper.toDto(product.getCompany()))
+                .categoryDto(categoryMapper.toDto(product.getCategory()))
+                .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                .reviewDtoList(product.getReviews().stream()
+                        .map(review -> ReviewDto.builder()
+                                .message(review.getMessage())
+                                .dateTime(review.getDateTime())
+                                .id(review.getId())
+                                .userDto(userMapper.toDto(review.getUser()))
+                                .build())
+                        .toList())
+                .build();
+    }
+    private List<Product> buildingProductsFromProductsForSave(List<ProductForSaveDto> products){
+        return products.stream()
+                .map(productForSaveDto -> Product.builder()
+                        .name(productForSaveDto.getName())
+                        .title(productForSaveDto.getTitle())
+                        .description(productForSaveDto.getDescription())
+                        .amount(1)
+                        .price(productForSaveDto.getPrice())
+                        .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
+                        .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
+                        .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
+                        .build())
+                .toList();
+    }
+
+    private List<ProductForSaveDto> buildingProductsForSaveFromProducts(List<Product> products){
+        return products.stream()
+                .map(saveProduct -> ProductForSaveDto.builder()
+                        .name(saveProduct.getName())
+                        .title(saveProduct.getTitle())
+                        .description(saveProduct.getDescription())
+                        .price(saveProduct.getPrice())
+                        .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
+                        .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
+                        .companyDto(companyMapper.toDto(saveProduct.getCompany()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
+    private Product buildingProductFromProductForSaveDto(ProductForSaveDto productForSaveDto){
+        return Product.builder()
+                .name(productForSaveDto.getName())
+                .title(productForSaveDto.getTitle())
+                .description(productForSaveDto.getDescription())
+                .amount(1)
+                .price(productForSaveDto.getPrice())
+                .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
+                .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
+                .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
+                .build();
+    }
+
+    private ProductForSaveDto buildingProductFromProductForSaveDto(Product saveProduct){
+        return ProductForSaveDto.builder()
+                .name(saveProduct.getName())
+                .title(saveProduct.getTitle())
+                .description(saveProduct.getDescription())
+                .price(saveProduct.getPrice())
+                .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
+                .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
+                .companyDto(companyMapper.toDto(saveProduct.getCompany()))
+                .build();
     }
 }

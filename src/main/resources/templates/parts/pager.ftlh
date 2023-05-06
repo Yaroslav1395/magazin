@@ -1,4 +1,4 @@
-<#macro pager url products>
+<#macro pager urlForPagination products>
     <#if products.getTotalPages() gt 3 && products??>
         <#assign
             totalPages = products.getTotalPages()
@@ -17,23 +17,23 @@
 
     <div id="pagination" class="section-p1">
         <#if products.getTotalPages() gt 3 && (pageNumber - 1) gt 0>
-            <a href="${url}pageNumber=${(pageNumber - 1) - 1}"><i class="fa-solid fa-arrow-left"></i></a>
+            <a href="${urlForPagination}pageNumber=${(pageNumber - 1) - 1}"><i class="fa-solid fa-arrow-left"></i></a>
         </#if>
 
         <#list body as p>
 
             <#if (p - 1) == products.getNumber()>
-                <a class="active" href="${url}pageNumber=${p - 1}">${p}</a>
+                <a class="active" href="${urlForPagination}pageNumber=${p - 1}">${p}</a>
             <#elseif p == -1>
                 <a class="disabled" href="#">...</a>
             <#else>
-                <a href="${url}pageNumber=${p - 1}">${p}</a>
+                <a href="${urlForPagination}pageNumber=${p - 1}">${p}</a>
             </#if>
 
         </#list>
 
         <#if products.getTotalPages() gt 3 && pageNumber != products.getTotalPages()>
-            <a href="${url}pageNumber=${(pageNumber - 1) + 1}"><i class="fa-solid fa-arrow-right"></i></a>
+            <a href="${urlForPagination}pageNumber=${(pageNumber - 1) + 1}"><i class="fa-solid fa-arrow-right"></i></a>
         </#if>
     </div>
 </#macro>
