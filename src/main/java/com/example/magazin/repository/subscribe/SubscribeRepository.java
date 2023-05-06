@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface SubscribeRepository extends JpaRepository<Subscribe, Integer> {
     Optional<Subscribe> findByEmail(String email);
+    boolean existsByEmail(String email);
 }

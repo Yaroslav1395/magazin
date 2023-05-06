@@ -74,4 +74,9 @@ public class SubscribeServiceImpl implements SubscribeService {
         return subscribeMapper.toDto(subscribeRepository.save(Subscribe.builder().email(email).build()));
     }
 
+    @Override
+    public boolean existByEmail(String email) {
+        return subscribeRepository.existsByEmail(email);
+    }
+
 }

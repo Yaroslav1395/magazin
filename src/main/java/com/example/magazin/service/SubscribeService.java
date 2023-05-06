@@ -16,4 +16,5 @@ public interface SubscribeService {
     SubscribeDto getSubscribeByEmail(String email);
     boolean deleteSubscribeById(Integer id);
     SubscribeDto saveSubscribe(String email);
+    boolean existByEmail(String email);
 }

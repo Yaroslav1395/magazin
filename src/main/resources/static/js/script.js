@@ -1,24 +1,8 @@
-/*Отправка подписки на сервер*/
-const subscribeForm = document.getElementById("subscribe-form");
 
-subscribeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    subscribeFormSubmitHandler(event.target);
-});
-
-function subscribeFormSubmitHandler(loginForm){
-    const formData  = new FormData(loginForm);
-    sendSubscribeData(formData);
-};
-
-function sendSubscribeData(formData){
-    const email = formData.get("email");
-
-    axios.post("http://localhost:8080/quantum/main", email,
-        {headers: {'Content-Type': 'multipart/form-data'}
-    })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+/**Очистка формы подписки**/
+const input = document.getElementById("email");
+if(input != null){
+    input.value = "";
 };
 
 /*Кнопка открытия и закрытия меню для экранов до 800px*/
@@ -67,19 +51,76 @@ if(shopCatalog != null){
         var productCell = target.closest(".cell");
         var categoryId = productCell.id;
 
-        window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId + "?products=0";
+        window.location.href = 'http://localhost:8080/quantum/shop/category/' +
+                                                            categoryId + "?pageNumber=0&sortDir=asc&sortField=id";
     });
 };
 
-/*Запрос на получение продуктов по категории из боковой навигации*/
-const catalog = document.getElementById('catalog-ul');
+/*Очистка поисковой формы*/
+const clearFormBtn = document.getElementById('clearFormBtn');
+if(clearFormBtn != null){
+    clearFormBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        var searchInput = document.getElementById('searchInput');
+        searchInput.value="";
+    })
+}
 
-if(catalog != null){
-    catalog.addEventListener("click", (event) => {
-        var target = event.target;
-        var li = target.closest("li");
-        var categoryId = li.id;
-        window.location.href = 'http://localhost:8080/quantum/shop/category/' + categoryId + "?products=0";
+/**Работа слaйдера*/
+const rangeInput = document.querySelectorAll(".range-input input");
+const priceInput = document.querySelectorAll(".price-input input");
+const progress = document.querySelector(".slider .progress");
+let priceGap;
+let minVal = parseInt(priceInput[0].value);
+let maxVal = parseInt(priceInput[1].value);
+
+progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+
+if(rangeInput[1].max > 50000){
+    priceGap = 5000;
+}else if(rangeInput[1].max > 400000){
+    priceGap = 50000;
+}else{
+    priceGap = 500;
+}
+
+if(priceInput !=null){
+    priceInput.forEach(input => {
+        input.addEventListener("input", e => {
+            let minVal = parseInt(priceInput[0].value);
+            let maxVal = parseInt(priceInput[1].value);
+
+            if((maxVal - minVal >= priceGap) && maxVal <= rangeInput[1].value){
+                if(e.target.className === "input-min"){
+                    rangeInput[0].value = minVal;
+                    progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                }else{
+                    rangeInput[1].value = maxVal;
+                    progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+                }
+            }
+        });
+    });
+
+    rangeInput.forEach(input => {
+        input.addEventListener("input", e => {
+            let minVal = parseInt(rangeInput[0].value);
+            let maxVal = parseInt(rangeInput[1].value);
+
+            if(maxVal - minVal < priceGap){
+                if(e.target.className === "range-min"){
+                    rangeInput[0].value = maxVal - priceGap;
+                }else{
+                    rangeInput[1].value = minVal + priceGap;
+                }
+            }else{
+                priceInput[0].value = minVal;
+                priceInput[1].value = maxVal;
+                progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+            }
+        });
     });
 };
 
@@ -156,7 +197,6 @@ headerNuv.addEventListener("click", (event) => {
 
 /*Изменение общей стоимости продукта исходя из количества и удаление продукта*/
 const tableBody = document.getElementById("tableBody");
-console.log(tableBody);
 if(tableBody != null){
     orderRecalculation(tableBody);
     tableBody.addEventListener("click", (event) => {
@@ -229,7 +269,6 @@ function orderRecalculation(tableBody){
 
 /*Отправка купона*/
 const couponForm = document.getElementById("couponForm");
-console.log(couponForm)
 if(couponForm != null){
     couponForm.addEventListener("submit", (event) => {
         event.preventDefault();

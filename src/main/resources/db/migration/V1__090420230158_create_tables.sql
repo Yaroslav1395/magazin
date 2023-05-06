@@ -66,7 +66,7 @@ CREATE TABLE `products` (
   `description` varchar(2000) NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` decimal(38,2) NOT NULL,
-  `receipt_date` datetime(6) NOT NULL,
+  `receipt_date` datetime(6),
   `title` varchar(200) NOT NULL,
   `category_id` int DEFAULT NULL,
   `company_id` int DEFAULT NULL,
