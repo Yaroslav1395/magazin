@@ -8,25 +8,19 @@ import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serializable;
+
 @Data
 @Builder
-public class ProductImageDto {
+public class ProductImageDto implements Serializable {
     @NotNull(message = "ID must be not null", groups = OnUpdate.class)
     private Integer id;
 
     @Length(max = 500, min=17, message = "Image one length must be more then 17 and smaller then 500 symbols",
             groups = {OnUpdate.class, OnCreate.class})
-    private String imageOne;
+    private String filePath;
     @Length(max = 500, min=17, message = "Image two length must be more then 17 and smaller then 500 symbols",
             groups = {OnUpdate.class, OnCreate.class})
     @NotNull(message = "Image path must be not null", groups = {OnUpdate.class, OnCreate.class})
-    private String imageTwo;
-    @Length(max = 500, min=17, message = "Image three length must be more then 17 and smaller then 500 symbols",
-            groups = {OnUpdate.class, OnCreate.class})
-    @NotNull(message = "Image path must be not null", groups = {OnUpdate.class, OnCreate.class})
-    private String imageThree;
-    @Length(max = 500, min=17, message = "Image four length must be more then 17 and smaller then 500 symbols",
-            groups = {OnUpdate.class, OnCreate.class})
-    @NotNull(message = "Image path must be not null", groups = {OnUpdate.class, OnCreate.class})
-    private String imageFour;
+    private String src;
 }

@@ -25,7 +25,7 @@ public class OrderDto {
     private Integer id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    @NotNull(message = "Data time must be not null")
+    @NotNull(message = "Data time must be not null", groups = {OnUpdate.class, OnCreate.class})
     @Past
     private LocalDateTime dateTime;
     @NotNull(message = "Total must be not null", groups = {OnUpdate.class, OnCreate.class})

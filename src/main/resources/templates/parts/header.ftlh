@@ -8,7 +8,8 @@
                 <li><a class="link" href="http://localhost:8080/quantum/blog">Блог</a></li>
                 <li><a class="link" href="http://localhost:8080/quantum/about">О нас</a></li>
                 <li><a class="link" href="http://localhost:8080/quantum/contact">Контакты</a></li>
-                <li id="lg-bag"><a id = "cartLink" class="link" href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <#nested>
+
                 <a class="link" href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
             </ul>
         </div>

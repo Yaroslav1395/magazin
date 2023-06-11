@@ -19,7 +19,7 @@ public class CategoryDto {
     @Length(max = 500, min=17, message = "Image length must be more then 17 and smaller then 500 symbols",
             groups = {OnUpdate.class, OnCreate.class})
     @NotNull(message = "Image path must be not null", groups = {OnUpdate.class, OnCreate.class})
-    private String image;
-
+    private String filePath;
     private String src;
+
 }

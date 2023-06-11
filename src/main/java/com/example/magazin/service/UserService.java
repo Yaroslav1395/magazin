@@ -28,4 +28,5 @@ public interface UserService {
     void deleteUsersByIds(List<Integer> ids);
     UserDto updateUser(Integer userId, UserDto userDto);
     Long countUsers();
+    boolean existsByEmail(String email);
 }

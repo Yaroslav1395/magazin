@@ -14,6 +14,8 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 @Data
 @Builder
 public class ProductForSaveDto {
@@ -34,7 +36,7 @@ public class ProductForSaveDto {
     @Length(max = 2000, message = "Description length must be smaller then 2000", groups = {OnUpdate.class, OnCreate.class})
     private String description;
     @NotNull(message = "Products images mast be not null", groups = {OnUpdate.class, OnCreate.class})
-    private ProductImageDto productImageDto;
+    private List<ProductImageDto> productImagesDto;
     @NotNull(message = "Category mast be not null", groups = {OnUpdate.class, OnCreate.class})
     private CategoryDto categoryDto;
     @NotNull(message = "Company mast be not null", groups = {OnUpdate.class, OnCreate.class})

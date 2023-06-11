@@ -1,3 +1,32 @@
+/**Закрыть сообщение**/
+const messageClose = document.getElementById("message-close");
+if(messageClose != null){
+    messageClose.addEventListener("click", () => {
+        let messageWrapper = document.getElementById("message-wrapper");
+        messageWrapper.style.display = "none";
+    })
+}
+
+/**Показать скрыть пароль регистрации**/
+const showRegistrationBtn = document.getElementById("showRegistration");
+console.log(showRegistrationBtn);
+if(showRegistrationBtn != null){
+    showRegistrationBtn.addEventListener("click", () => {
+        const passwordInput = document.getElementById("password");
+        if(passwordInput.type == "password"){
+            passwordInput.type = "text";
+        }else{
+            passwordInput.type = "password";
+        }
+    })
+}
+/**Закрыть страницу регистрации**/
+const closeLogin = document.getElementById("close-registration");
+if(closeLogin != null){
+    closeLogin.addEventListener('click', () => {
+          window.location.href = '/quantum/main'
+    })
+}
 
 /**Очистка формы подписки**/
 const input = document.getElementById("email");
@@ -71,60 +100,76 @@ const rangeInput = document.querySelectorAll(".range-input input");
 const priceInput = document.querySelectorAll(".price-input input");
 const progress = document.querySelector(".slider .progress");
 let priceGap;
-let minVal = parseInt(priceInput[0].value);
-let maxVal = parseInt(priceInput[1].value);
+let minVal;
+let maxVal;
+console.log(priceInput);
+if(priceInput != null && priceInput.length > 0){
+    let minVal = parseInt(priceInput[0].value);
+    let maxVal = parseInt(priceInput[1].value);
 
-progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
-progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+    if(progress != null){
+        progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+        progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+    }
 
-if(rangeInput[1].max > 50000){
-    priceGap = 5000;
-}else if(rangeInput[1].max > 400000){
-    priceGap = 50000;
-}else{
-    priceGap = 500;
-}
+    if(rangeInput[1].max > 50000){
+        priceGap = 5000;
+    }else if(rangeInput[1].max > 400000){
+        priceGap = 50000;
+    }else{
+        priceGap = 500;
+    }
 
-if(priceInput !=null){
-    priceInput.forEach(input => {
-        input.addEventListener("input", e => {
-            let minVal = parseInt(priceInput[0].value);
-            let maxVal = parseInt(priceInput[1].value);
+    if(priceInput !=null){
+        priceInput.forEach(input => {
+            input.addEventListener("input", e => {
+                let minVal = parseInt(priceInput[0].value);
+                let maxVal = parseInt(priceInput[1].value);
 
-            if((maxVal - minVal >= priceGap) && maxVal <= rangeInput[1].value){
-                if(e.target.className === "input-min"){
-                    rangeInput[0].value = minVal;
-                    progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                if((maxVal - minVal >= priceGap) && maxVal <= rangeInput[1].value){
+                    if(e.target.className === "input-min"){
+                        rangeInput[0].value = minVal;
+                        progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                    }else{
+                        rangeInput[1].value = maxVal;
+                        progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+                    }
+                }
+            });
+        });
+
+        rangeInput.forEach(input => {
+            input.addEventListener("input", e => {
+                let minVal = parseInt(rangeInput[0].value);
+                let maxVal = parseInt(rangeInput[1].value);
+
+                if(maxVal - minVal < priceGap){
+                    if(e.target.className === "range-min"){
+                        rangeInput[0].value = maxVal - priceGap;
+                    }else{
+                        rangeInput[1].value = minVal + priceGap;
+                    }
                 }else{
-                    rangeInput[1].value = maxVal;
+                    priceInput[0].value = minVal;
+                    priceInput[1].value = maxVal;
+                    progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
                     progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
                 }
-            }
+            });
         });
-    });
-
-    rangeInput.forEach(input => {
-        input.addEventListener("input", e => {
-            let minVal = parseInt(rangeInput[0].value);
-            let maxVal = parseInt(rangeInput[1].value);
-
-            if(maxVal - minVal < priceGap){
-                if(e.target.className === "range-min"){
-                    rangeInput[0].value = maxVal - priceGap;
-                }else{
-                    rangeInput[1].value = minVal + priceGap;
-                }
-            }else{
-                priceInput[0].value = minVal;
-                priceInput[1].value = maxVal;
-                progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
-                progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
-            }
-        });
-    });
+    };
 };
 
-/*Переход к информации о продукте при клике на карточку или добавление в корзину*/
+
+/*Установить текущий урл каждому продукту*/
+const currentUrlInputs = document.querySelectorAll(".currentUrlInput");
+if(currentUrlInputs != null) {
+    currentUrlInputs.forEach(input => {
+        input.value = window.location.href;
+    })
+}
+
+/*Переход к информации о продукте при клике на карточку или добавление в корзину
 const proContainer = document.getElementById('pro-container');
 if(proContainer != null) {
     let cart = [];
@@ -156,7 +201,7 @@ if(proContainer != null) {
             window.location.href = 'http://localhost:8080/quantum/sProduct/' + productId;
         };
     });
-};
+};*/
 /*Смена картинок в продукте*/
 var mainImg = document.getElementById("MainImg");
 var smallImg = document.getElementsByClassName("small-img");
@@ -199,47 +244,14 @@ headerNuv.addEventListener("click", (event) => {
 const tableBody = document.getElementById("tableBody");
 if(tableBody != null){
     orderRecalculation(tableBody);
-    tableBody.addEventListener("click", (event) => {
-        event.preventDefault();
-
-        var tr = event.target.closest("#line");
-
-        if(event.target.id == "remove"){
-            var productId = tr.children[0].id;
-            removeProduct(productId)
-            tr.remove();
-            orderRecalculation(tableBody);
-            return;
-        }
-        var sumTd = tr.children[5];
-        var inputValue = tr.children[4].firstElementChild.value;
-        var priceText = tr.children[3].textContent;
-        var price = priceText.substring(0, priceText.search(" сом"));
-        var price2 = price.replaceAll(/\xA0/g, '');
-        var sum = parseInt(price2) * parseInt(inputValue);
-        sumTd.textContent = (sum+'').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ') + ' сом';
-        orderRecalculation(tableBody);
-    });
+    productRecalculation(tableBody);
 }
-
-/*Функция удаления продукта из локального хранилища*/
-function removeProduct(id){
-    var cart = JSON.parse(localStorage.getItem("cart"));
-    for(let i = 0; i < cart.length; i++){
-        if(cart[i] == id){
-            cart.splice(i, 1);
-            break;
-        };
-    };
-
-    var json = JSON.stringify(cart);
-    localStorage.setItem('cart', json);
-};
 
 /*Функция пересчета заказа*/
 function orderRecalculation(tableBody){
     var discountTr = document.getElementById("discount");
-    var discount = 0;
+    var discount = discountTr.textContent;
+    console.log(discount);
     if(discountTr.textContent != null){
         discount = discountTr.textContent.substring(0, discountTr.textContent.search(" %"));
         console.log(discountTr);
@@ -260,24 +272,22 @@ function orderRecalculation(tableBody){
     }else{
         finalSum = orderSum;
     };
-
+    var productTotalInput = document.getElementById("orderTotal");
+    console.log(productTotalInput);
+    productTotalInput.value = finalSum;
     document.getElementById("productSum").textContent =
                                         (orderSum+'').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ') + ' сом';
     document.getElementById("orderSum").textContent =
                                             (finalSum+'').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ') + ' сом';
 }
 
-/*Отправка купона*/
-const couponForm = document.getElementById("couponForm");
-if(couponForm != null){
-    couponForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        var formData  = new FormData(event.target);
-        var coupon = formData.get("coupon");
-        console.log(coupon);
-        var jsonIds = localStorage.getItem('cart');
-        var ids = jsonIds.slice(1, jsonIds.length - 1);
-        console.log(ids);
-        window.location.href = 'http://localhost:8080/quantum/cart/products/' + ids + '/coupon/' + coupon;
-    });
+function productRecalculation(tableBody){
+    tableBody.addEventListener("change", (event) => {
+        var target = event.target;
+        var trEvent = target.closest('tr');
+        var productId = trEvent.children[0].id;
+        var amountProduct = event.target.value;
+        location.assign('/quantum/cart/changeAmount?productId=' + productId + '&amountProduct=' + amountProduct);
+    })
 }
+

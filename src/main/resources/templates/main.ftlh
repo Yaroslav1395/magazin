@@ -13,6 +13,23 @@
 
 <@h.page>
     <@hr.page>
+        <#if userRoles??>
+            <#list userRoles as role>
+                <#if role.role == 'ROLE_ADMIN'>
+                    <li><a class="link" href="/quantum/admin">Администрирование</a></li>
+                </#if>
+            </#list>
+        </#if>
+        <div class="icon-btns">
+            <#if userRoles??>
+                <li id="lg-bag"><a href="/quantum/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/logout"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+            <#else>
+                <li id="lg-bag"><a href="/quantum/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/registration"><i class="fa-solid fa-user-plus"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/login"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+            </#if>
+        </div>
     </@hr.page>
 
     <#if message??>
@@ -51,7 +68,7 @@
                                 </#if>
                                 <div class="pro">
                                     <div class="image-wrapper">
-                                        <img src="/${products[countTwo].productImageDto.imageOne}" alt="${products[countTwo].productImageDto.imageOne}">
+                                        <img src="/${products[countTwo].productImagesDto[0].src}" alt="${products[countTwo].productImagesDto[0].src}">
                                     </div>
                                     <div class="des">
                                         <span>${products[countTwo].categoryDto.name}</span>
@@ -86,7 +103,7 @@
         <#list newProducts as product>
             <div class="pro">
                 <div class="image-wrapper">
-                    <img src="/${product.productImageDto.imageOne}" alt="${product.name}">
+                    <img src="/${product.productImagesDto[0].src}" alt="${product.name}">
                 </div>
                 <div class="des">
                     <span>${product.categoryDto.name}</span>
@@ -107,7 +124,7 @@
 
     <@s.page>
          <div>
-            <@spring.formInput "subscribeDto.email" "type='email'" "placeholder='Your email adress'"/>
+            <@spring.formInput "subscribeDto.email" "type='email'" "placeholder='Your email address'"/>
             <@spring.showErrors "<br>"/>
          </div>
     </@s.page>

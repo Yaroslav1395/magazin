@@ -16,8 +16,8 @@ public class Category {
     private Integer id;
     @Column(length = 200, nullable = false)
     private String name;
-    @Column(length = 200, nullable = false)
-    private String image;
+    @Column(name = "file_path", length = 200, nullable = false)
+    private String filePath;
     @Column(length = 200, nullable = false)
     private String src;
 }

@@ -3,7 +3,7 @@
     <div id="coupon">
         <h3>Использовать купон</h3>
         <div>
-            <form id="couponForm">
+            <form id="couponForm" action="/quantum/cart" method="post">
                 <input type="text" name="coupon" placeholder="Введите номер купона">
                 <button type="submit" class="normal">Использовать</button>
             </form>

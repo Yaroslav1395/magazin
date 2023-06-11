@@ -14,13 +14,30 @@
     </#if>
 
     <@hr.page>
+        <#if userRoles??>
+            <#list userRoles as role>
+                <#if role.role == 'ROLE_ADMIN'>
+                    <li><a class="link" href="/quantum/admin">Администрирование</a></li>
+                </#if>
+            </#list>
+        </#if>
+        <div class="icon-btns">
+            <#if userRoles??>
+                <li id="lg-bag"><a href="/quantum/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/logout"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+            <#else>
+                <li id="lg-bag"><a href="/quantum/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/registration"><i class="fa-solid fa-user-plus"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/login"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+            </#if>
+        </div>
     </@hr.page>
 
     <@b.page>
     </@b.page>
 
     <section id="product1">
-        <div >
+        <div>
             <div class="function">
                 <div class="search">
                     <p><i class="fa-solid fa-magnifying-glass"></i></p>
@@ -84,8 +101,8 @@
                             <input type="range" class="range-min" min="0" max="#{maxProductPrice - 1}" value="#{minInputValue}" step="20">
                             <input type="range" class="range-max" min="0" max="#{maxProductPrice}" value="#{maxInputValue}" step="20">
                         </div>
-                    </div>
                     </form>
+                </div>
             </div>
         </div>
     </section>
@@ -107,7 +124,9 @@
                 <div class="pro-container" id="pro-container">
                     <#list products.content as product>
                         <div id=${product.id} class="pro">
-                            <img src="/${product.productImageDto.imageOne}" alt="${product.name}">
+                            <a href = "/quantum/sProduct/${product.id}">
+                                <img src="/${product.productImagesDto[0].src}" alt="${product.name}">
+                            </a>
                             <div class="des">
                                 <span>${product.categoryDto.name}</span>
                                 <h4>${product.name}</h4>
@@ -119,7 +138,14 @@
                                     <i class="fas fa-star"></i>
                                 </div>
                                 <h4>${product.price} сом</h4>
-                                <div class="btn"><a class="link" href="#"><i class="fa-solid fa-cart-shopping"></i></a></div>
+                                <div class="btn">
+                                    <form action="/quantum/shop/addProduct" method="post">
+                                        <input type="hidden" name="productId" required value="${product.id}"></p>
+                                        <input type="hidden" name="productAmount" required value="1"></p>
+                                        <input class="currentUrlInput" type="hidden" name="currentUrl" required value=""></p>
+                                        <button class="product-btn" type="submit"><i class="fa-solid fa-cart-shopping"></i></button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </#list>
@@ -134,7 +160,7 @@
                 <#list categories as category>
                      <div id="${category.id}" class="cell">
                         <div class="cel-image-wrapper">
-                            <img src="/${category.image}">
+                            <img src="/${category.src}">
                         </div>
                         <h3>${category.name}</h3>
                      </div>

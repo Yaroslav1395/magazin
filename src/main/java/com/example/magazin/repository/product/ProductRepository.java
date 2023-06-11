@@ -7,8 +7,10 @@ import com.example.magazin.repository.ProductPrice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,6 +44,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<ProductInOrderCount> findFourBestSellingProductsByCategory(Integer categoryId);
     List<Product> findFirst8ByOrderByReceiptDateDesc();
     List<Product> findByCategoryId(Integer id);
+    List<Product> findByCompanyId(Integer id);
     @Query("SELECT p FROM Product p WHERE CONCAT(p.name, p.category.name, p.company.name) LIKE %?1%")
     List<Product> findProductByKeyword(String keyword);
     @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId AND p.price BETWEEN :min AND :max")
@@ -62,6 +65,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     ProductPrice findFirstByCategoryIdOrderByPriceDesc(Integer id);
     ProductPrice findFirstByCategoryIdOrderByPriceAsc(Integer id);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE products\n" +
+            "SET amount = :amount\n" +
+            "WHERE products.id = :productId")
+    void updateProductAmountById(@Param("productId") Integer productId, @Param("amount") Integer amount);
 
 
 }

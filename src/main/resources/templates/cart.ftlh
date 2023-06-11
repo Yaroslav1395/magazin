@@ -1,10 +1,43 @@
-<#import "parts/common.ftlh" as c>
-<#import "parts/cartBanner.ftlh" as b>
-<#import "parts/cartForm.ftlh" as f>
-<#import "parts/cartSubtotal.ftlh" as s>
-<@c.page>
-    <@b.page>
-    </@b.page>
+<#import "parts/head.ftlh" as h>
+<#import "parts/header.ftlh" as hr>
+<#import "parts/bannerCart.ftlh" as bc>
+<#import "parts/cartForm.ftlh" as cf>
+<#import "parts/cartSubtotal.ftlh" as cs>
+<#import "parts/subscribe.ftlh" as s>
+<#import "parts/footer.ftlh" as f>
+<#import "parts/message.ftlh" as m>
+<#import "/spring.ftl" as spring />
+
+<@h.page>
+    <@hr.page>
+        <#if userRoles??>
+            <#list userRoles as role>
+                <#if role.role == 'ROLE_ADMIN'>
+                    <li><a class="link" href="/quantum/admin">Администрирование</a></li>
+                </#if>
+            </#list>
+        </#if>
+        <div class="icon-btns">
+            <#if userRoles??>
+                <li id="lg-bag"><a href="/quantum/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/logout"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+            <#else>
+                <li id="lg-bag"><a href="/quantum/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/registration"><i class="fa-solid fa-user-plus"></i></a></li>
+                <li id="lg-bag"><a href="/quantum/login"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+            </#if>
+        </div>
+    </@hr.page>
+
+    <@bc.page>
+    </@bc.page>
+
+    <#if message??>
+        <@m.page>
+            <p>${message}</p>
+        </@m.page>
+    </#if>
+
     <section id="cart" class="section-p1">
         <table width="100%">
             <thead>
@@ -21,12 +54,13 @@
                 <#if products??>
                     <#list products as product>
                         <tr id="line">
-                            <td id="${product.id}"><a href="#"><i id="remove" class="fa-regular fa-circle-xmark"></i></a></td>
-                            <td><img src="/${product.productImageDto.imageOne}" alt=""></td>
+                            <td id="${product.id}"><a href="/quantum/cart/productDelete?productId=${product.id}"><i id="remove" class="fa-regular fa-circle-xmark"></i></a></td>
+                            <td><img src="/${product.productImages[0].src}" alt="${product.productImages[0].src}"></td>
                             <td>${product.name}</td>
                             <td id="price">${product.price} сом</td>
-                            <td><input id="amount" type="number" min="0" value="1"></td>
-                            <td id="sum">${product.price} сом</td>
+                            <#assign productSum = product.amount * product.price>
+                            <td><input id="amount" type="number" min="0" value="${product.amount}"></td>
+                            <td id="sum">${productSum} сом</td>
                         </tr>
                     </#list>
                 <#else>
@@ -37,21 +71,27 @@
             </tbody>
         </table>
     </section>
-    <@f.page>
+
+    <@cf.page>
         <#if coupon??>
-            <#if coupon.active == true>
-                <div>
-                    <p>Вы использовали купон, который предоставляет скидку ${coupon.percent} %.</p>
-                    <p>Купон активен до ${coupon.activeUntil}</p>
-                </div>
-            </#if>
+            <p>Скидка составляет ${coupon.percent} %</p>
+            <p>Купон активен до ${coupon.activeUntil}</p>
         </#if>
-    </@f.page>
+    </@cf.page>
+
+    <@cs.page>
+            <#if coupon??>
+                ${coupon.percent}
+            </#if>
+    </@cs.page>
+
     <@s.page>
-        <#if coupon??>
-            <#if coupon.active == true>
-                ${coupon.percent} %
-            </#if>
-        </#if>
+        <div>
+            <@spring.formInput "subscribeDto.email" "type='email'" "placeholder='Your email address'"/>
+            <@spring.showErrors "<br>"/>
+        </div>
     </@s.page>
-</@c.page>
+
+    <@f.page>
+    </@f.page>
+</@h.page>

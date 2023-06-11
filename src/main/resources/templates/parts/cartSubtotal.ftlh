@@ -12,14 +12,19 @@
             </tr>
             <tr>
                 <td>Скидка</td>
-                <td id="discount"><#nested></td>
+                    <td id="discount"><#nested> %</td>
             </tr>
             <tr>
                 <td><strong>Сумма</strong></td>
                 <td><strong id = "orderSum">$ 335</strong></td>
             </tr>
         </table>
-        <button class="normal">Оформить заказ</button>
+
+        <form action="/quantum/cart/newOrder" method="post">
+            <input id="orderTotal" type="hidden" value="" name= "total"/>
+            <button class="normal">Оформить заказ</button>
+        </form>
+
 </div>
 </section>
 </#macro>

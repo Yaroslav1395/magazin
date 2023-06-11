@@ -11,12 +11,13 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class CouponDto {
+public class CouponDto implements Serializable {
     @NotNull(message = "ID must be not null", groups = OnUpdate.class)
     private Integer id;
     @NotNull(message = "Name must be not null", groups = {OnUpdate.class, OnCreate.class})
@@ -32,6 +33,5 @@ public class CouponDto {
     @NotNull(message = "Data time must be not null")
     @Future(message = "Data must be future then now")
     private LocalDateTime activeUntil;
-
     private boolean active;
 }

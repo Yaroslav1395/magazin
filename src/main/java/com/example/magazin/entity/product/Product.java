@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
 @Table(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -37,10 +38,10 @@ public class Product {
     @Column(length = 100, nullable = false)
     private Integer amount;
     @Column(name = "receipt_date", length = 200, nullable = false)
+    @OrderBy("receipt_date ASC")
     private LocalDateTime receiptDate;
-    @OneToOne
-    @JoinColumn(name = "product_image_id")
-    private ProductImage productImage;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductImage> productImages = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;

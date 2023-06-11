@@ -18,7 +18,7 @@ public class UserRegistrationDto {
     @Length(max = 100, message = "First name length must be smaller then 100", groups = {OnUpdate.class, OnCreate.class})
     private String firstName;
     @NotBlank(message = "Last name must be not null and contain one symbol", groups = {OnUpdate.class, OnCreate.class})
-    @Length(max = 100, message = "First name length must be smaller then 100", groups = {OnUpdate.class, OnCreate.class})
+    @Length(max = 100, message = "Last name length must be smaller then 100", groups = {OnUpdate.class, OnCreate.class})
     private String lastName;
     @Email(message = "Email must be correspond bob@gmail.com", groups = {OnUpdate.class, OnCreate.class})
     @Length(max = 100, message = "Email length must be smaller then 100", groups = {OnUpdate.class, OnCreate.class})
@@ -27,8 +27,4 @@ public class UserRegistrationDto {
     @NotNull(message = "Password must be not null.", groups = {OnCreate.class, OnUpdate.class})
     @Length(max = 200, message = "Password length must be smaller then 200", groups = {OnUpdate.class, OnCreate.class})
     private String password;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull(message = "Password confirm must be not null.", groups = {OnCreate.class, OnUpdate.class})
-    @Length(max = 200, message = "Password confirm length must be smaller then 200", groups = {OnUpdate.class, OnCreate.class})
-    private String passwordConfirm;
 }

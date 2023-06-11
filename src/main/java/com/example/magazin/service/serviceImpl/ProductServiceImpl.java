@@ -1,24 +1,33 @@
 package com.example.magazin.service.serviceImpl;
 
 import com.example.magazin.dto.mappers.*;
-import com.example.magazin.dto.product.ProductForMainDto;
-import com.example.magazin.dto.product.ProductForSaveDto;
-import com.example.magazin.dto.product.ProductForSingleDto;
+import com.example.magazin.dto.product.*;
+import com.example.magazin.dto.productImageDto.ProductImageDto;
 import com.example.magazin.dto.review.ReviewDto;
+import com.example.magazin.entity.category.Category;
+import com.example.magazin.entity.company.Company;
 import com.example.magazin.entity.product.Product;
+import com.example.magazin.entity.productImage.ProductImage;
 import com.example.magazin.exceptions.ResourceNotFoundException;
+import com.example.magazin.repository.CompanyRepository;
 import com.example.magazin.repository.ProductInOrderCount;
+import com.example.magazin.repository.category.CategoryRepository;
 import com.example.magazin.repository.product.ProductRepository;
+import com.example.magazin.repository.productImage.ProductImageRepository;
 import com.example.magazin.repository.review.ReviewRepository;
+import com.example.magazin.service.ProductImageService;
 import com.example.magazin.service.ProductService;
 import com.example.magazin.service.sort.ProductSortType;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -26,6 +35,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
+    private CategoryRepository categoryRepository;
+    private CompanyRepository companyRepository;
+    private ProductImageService productImageService;
     private CategoryMapper categoryMapper;
     private CompanyMapper companyMapper;
     private ProductImageMapper productImageMapper;
@@ -43,6 +55,14 @@ public class ProductServiceImpl implements ProductService {
 
         return buildingProductForSingleDtoFromProduct(product);
     }
+
+    @Override
+    public ProductForOrderDto getProductForOrderById(Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        return buildingProductForOrderDtoFromProduct(product);
+    }
+
     public boolean existsById(Integer id){
         return productRepository.existsById(id);
     }
@@ -61,12 +81,39 @@ public class ProductServiceImpl implements ProductService {
         return buildingListProductForMainDtoFromProducts(productRepository.findAll());
     }
 
-    public ProductForSaveDto save(ProductForSaveDto productForSaveDto){
-        Product product = buildingProductFromProductForSaveDto(productForSaveDto);
+    @Override
+    public List<ProductForSaveDto> getAllProductsAsProductForSaveDto() {
+        return buildingProductsForSaveFromProducts(productRepository.findAll());
+    }
 
-        Product saveProduct = productRepository.save(product);
+    @Override
+    public List<ProductForSaveDto> getAllProductsAsProductForSaveDtoByCategoryId(Integer categoryId) {
+        return buildingProductsForSaveFromProducts(productRepository.findByCategoryId(categoryId));
+    }
 
-        return buildingProductFromProductForSaveDto(saveProduct);
+    @Override
+    public List<ProductForSaveDto> getProductsAsProductForSaveDtoByKeyword(String keyword) {
+        return buildingProductsForSaveFromProducts(productRepository.findProductByKeyword(keyword));
+    }
+
+    @Override
+    public List<ProductForSaveDto> getProductsAsProductForSaveDtoByCompanyId(Integer companyId) {
+        return buildingProductsForSaveFromProducts(productRepository.findByCompanyId(companyId));
+    }
+    @Transactional
+    public ProductForSaveDto save(ProductNewDto productNewDto, List<ProductImageDto> productImagesDto){
+        Product product = buildingProductFromProductForSaveDto(productNewDto);
+        List<ProductImage> productImages = productImagesDto.stream().map(productImageDto -> ProductImage.builder()
+                .product(product)
+                .src(productImageDto.getSrc())
+                .filePath(productImageDto.getFilePath())
+                .build()).toList();
+        product.setProductImages(productImages);
+
+        Product productSave = productRepository.save(product);
+        //List<ProductImageDto> productImageDtoList = productImageService.saveAll(productImagesDto, product);
+
+        return null;//buildingProductFromProductForSaveDto(productSave, productImageDtoList);
     }
     public List<ProductForSaveDto> saveAll(List<ProductForSaveDto> products){
         List<Product> productList = buildingProductsFromProductsForSave(products);
@@ -170,14 +217,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductForMainDto> getProductsByIdList(List<Integer> productsId){
-        return productRepository.findAllById(productsId).stream()
+    public List<ProductForMainDto> getProductsByIdList(Set<Integer> productsIds){
+        return productRepository.findAllById(productsIds).stream()
                 .map(product -> ProductForMainDto.builder()
                         .id(product.getId())
                         .name(product.getName())
                         .title(product.getTitle())
                         .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                        //.productImageDto(productImageMapper.toDto(product.getProductImage()))
                         .categoryDto(categoryMapper.toDto(product.getCategory()))
                         .build())
                 .toList();
@@ -223,7 +270,11 @@ public class ProductServiceImpl implements ProductService {
                         .name(product.getName())
                         .title(product.getTitle())
                         .price(product.getPrice())
-                        .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                        .productImagesDto(product.getProductImages().stream().map(productImage -> ProductImageDto.builder()
+                                        .src(productImage.getSrc())
+                                        .filePath(productImage.getFilePath())
+                                        .build())
+                                .collect(Collectors.toList()))
                         .categoryDto(categoryMapper.toDto(product.getCategory()))
                         .build())
                 .toList();
@@ -234,10 +285,28 @@ public class ProductServiceImpl implements ProductService {
                 .name(product.getName())
                 .title(product.getTitle())
                 .price(product.getPrice())
-                .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                .productImagesDto(productImageMapper.toDto(product.getProductImages()))
                 .categoryDto(categoryMapper.toDto(product.getCategory()))
                 .build();
     }
+
+    private ProductForOrderDto buildingProductForOrderDtoFromProduct(Product product){
+        System.out.println(product.getId());
+        System.out.println(product.getAmount());
+        return ProductForOrderDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .categoryId(product.getCategory().getId())
+                .price(product.getPrice())
+                .productImages(product.getProductImages().stream()
+                        .map(productImage -> ProductImageDto.builder()
+                                .src(productImage.getSrc())
+                                .filePath(productImage.getFilePath())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
     private ProductForSingleDto buildingProductForSingleDtoFromProduct(Product product){
         return ProductForSingleDto.builder()
                 .id(product.getId())
@@ -247,7 +316,12 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .companyDto(companyMapper.toDto(product.getCompany()))
                 .categoryDto(categoryMapper.toDto(product.getCategory()))
-                .productImageDto(productImageMapper.toDto(product.getProductImage()))
+                .productImagesDto(product.getProductImages().stream()
+                        .map(productImage -> ProductImageDto.builder()
+                                .src(productImage.getSrc())
+                                .filePath(productImage.getFilePath())
+                                .build())
+                        .collect(Collectors.toList()))
                 .reviewDtoList(product.getReviews().stream()
                         .map(review -> ReviewDto.builder()
                                 .message(review.getMessage())
@@ -266,7 +340,7 @@ public class ProductServiceImpl implements ProductService {
                         .description(productForSaveDto.getDescription())
                         .amount(1)
                         .price(productForSaveDto.getPrice())
-                        .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
+                        .productImages(productImageMapper.toEntity(productForSaveDto.getProductImagesDto()))
                         .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
                         .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
                         .build())
@@ -276,11 +350,12 @@ public class ProductServiceImpl implements ProductService {
     private List<ProductForSaveDto> buildingProductsForSaveFromProducts(List<Product> products){
         return products.stream()
                 .map(saveProduct -> ProductForSaveDto.builder()
+                        .id(saveProduct.getId())
                         .name(saveProduct.getName())
                         .title(saveProduct.getTitle())
                         .description(saveProduct.getDescription())
                         .price(saveProduct.getPrice())
-                        .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
+                        .productImagesDto(productImageMapper.toDto(saveProduct.getProductImages()))
                         .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
                         .companyDto(companyMapper.toDto(saveProduct.getCompany()))
                         .build())
@@ -295,19 +370,38 @@ public class ProductServiceImpl implements ProductService {
                 .description(productForSaveDto.getDescription())
                 .amount(1)
                 .price(productForSaveDto.getPrice())
-                .productImage(productImageMapper.toEntity(productForSaveDto.getProductImageDto()))
+                .productImages(productImageMapper.toEntity(productForSaveDto.getProductImagesDto()))
                 .category(categoryMapper.toEntity(productForSaveDto.getCategoryDto()))
                 .company(companyMapper.toEntity(productForSaveDto.getCompanyDto()))
                 .build();
     }
 
-    private ProductForSaveDto buildingProductFromProductForSaveDto(Product saveProduct){
+    private Product buildingProductFromProductForSaveDto(ProductNewDto productNewDto){
+        Category category = categoryRepository.findById(productNewDto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Company company = companyRepository.findById(productNewDto.getCompanyId())
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
+
+        return Product.builder()
+                .name(productNewDto.getName())
+                .title(productNewDto.getTitle())
+                .description(productNewDto.getDescription())
+                .amount(1)
+                .price(productNewDto.getPrice())
+                .category(category)
+                .company(company)
+                .receiptDate(LocalDateTime.now())
+                .build();
+    }
+
+    private ProductForSaveDto buildingProductFromProductForSaveDto(Product saveProduct, List<ProductImageDto> productImageDtoList){
         return ProductForSaveDto.builder()
+                .id(saveProduct.getId())
                 .name(saveProduct.getName())
                 .title(saveProduct.getTitle())
                 .description(saveProduct.getDescription())
                 .price(saveProduct.getPrice())
-                .productImageDto(productImageMapper.toDto(saveProduct.getProductImage()))
+                .productImagesDto(productImageDtoList)
                 .categoryDto(categoryMapper.toDto(saveProduct.getCategory()))
                 .companyDto(companyMapper.toDto(saveProduct.getCompany()))
                 .build();

@@ -37,7 +37,7 @@ public class ProductForSingleDto {
     @Digits(integer = 2000000, fraction = 2, message = "Price must contain 2 symbols after point")
     private BigDecimal price;
     @NotNull(message = "Products images mast be not null", groups = {OnUpdate.class, OnCreate.class})
-    private ProductImageDto productImageDto;
+    private List<ProductImageDto> productImagesDto;
     @NotNull(message = "Category mast be not null", groups = {OnUpdate.class, OnCreate.class})
     private CategoryDto categoryDto;
     @NotNull(message = "Company mast be not null", groups = {OnUpdate.class, OnCreate.class})

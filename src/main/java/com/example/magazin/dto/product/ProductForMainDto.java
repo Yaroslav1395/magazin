@@ -11,6 +11,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
@@ -29,7 +30,7 @@ public class ProductForMainDto {
     @Digits(integer = 2000000, fraction = 2, message = "Price must contain 2 symbols after point")
     private BigDecimal price;
     @NotNull(message = "Products images mast be not null", groups = {OnUpdate.class, OnCreate.class})
-    private ProductImageDto productImageDto;
+    private List<ProductImageDto> productImagesDto;
     @NotNull(message = "Category mast be not null", groups = {OnUpdate.class, OnCreate.class})
     private CategoryDto categoryDto;
 }

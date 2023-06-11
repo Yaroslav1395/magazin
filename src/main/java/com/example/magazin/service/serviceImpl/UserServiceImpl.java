@@ -4,15 +4,19 @@ import com.example.magazin.dto.mappers.UserMapper;
 import com.example.magazin.dto.mappers.UserRegistrationMapper;
 import com.example.magazin.dto.user.UserDto;
 import com.example.magazin.dto.user.UserRegistrationDto;
+import com.example.magazin.entity.user.Role;
 import com.example.magazin.entity.user.User;
 import com.example.magazin.exceptions.ResourceNotFoundException;
+import com.example.magazin.repository.role.RoleRepository;
 import com.example.magazin.repository.user.UserRepository;
 import com.example.magazin.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +24,10 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
     private UserMapper userMapper;
     private UserRegistrationMapper userRegistrationMapper;
+    private PasswordEncoder passwordEncoder;
     public boolean isUserExist(Integer id){
         return userRepository.existsById(id);
     }
@@ -89,6 +95,9 @@ public class UserServiceImpl implements UserService {
     }
     public UserRegistrationDto saveUser(UserRegistrationDto userRegistrationDto){
         User user = userRegistrationMapper.toEntity(userRegistrationDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = roleRepository.findByRole("ROLE_USER").orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        user.getRoles().add(role);
         User saveUser = userRepository.save(user);
         return userRegistrationMapper.toDto(saveUser);
     }
@@ -122,6 +131,11 @@ public class UserServiceImpl implements UserService {
     }
     public Long countUsers(){
         return userRepository.count();
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
 }
