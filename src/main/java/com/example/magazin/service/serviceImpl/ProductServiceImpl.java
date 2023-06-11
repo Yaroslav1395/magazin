@@ -13,8 +13,6 @@ import com.example.magazin.repository.CompanyRepository;
 import com.example.magazin.repository.ProductInOrderCount;
 import com.example.magazin.repository.category.CategoryRepository;
 import com.example.magazin.repository.product.ProductRepository;
-import com.example.magazin.repository.productImage.ProductImageRepository;
-import com.example.magazin.repository.review.ReviewRepository;
 import com.example.magazin.service.ProductImageService;
 import com.example.magazin.service.ProductService;
 import com.example.magazin.service.sort.ProductSortType;
@@ -25,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

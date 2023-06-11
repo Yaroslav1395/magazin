@@ -1,11 +1,9 @@
 package com.example.magazin.controller;
 
 import com.example.magazin.dto.product.ProductForSingleDto;
-import com.example.magazin.dto.review.ReviewDto;
 import com.example.magazin.dto.review.ReviewForSaveDto;
 import com.example.magazin.dto.user.UserDto;
 import com.example.magazin.entity.user.Role;
-import com.example.magazin.entity.user.User;
 import com.example.magazin.service.ProductService;
 import com.example.magazin.service.ReviewService;
 import com.example.magazin.service.RoleService;

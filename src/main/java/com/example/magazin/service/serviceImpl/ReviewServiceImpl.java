@@ -3,7 +3,6 @@ package com.example.magazin.service.serviceImpl;
 import com.example.magazin.dto.mappers.UserMapper;
 import com.example.magazin.dto.review.ReviewDto;
 import com.example.magazin.dto.review.ReviewForSaveDto;
-import com.example.magazin.dto.user.UserDto;
 import com.example.magazin.entity.product.Product;
 import com.example.magazin.entity.review.Review;
 import com.example.magazin.entity.user.User;

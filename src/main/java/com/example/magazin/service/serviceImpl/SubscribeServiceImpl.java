@@ -3,7 +3,6 @@ package com.example.magazin.service.serviceImpl;
 import com.example.magazin.dto.mappers.SubscribeMapper;
 import com.example.magazin.dto.subscribe.SubscribeDto;
 import com.example.magazin.entity.subscribe.Subscribe;
-import com.example.magazin.exceptions.EntryAlreadyExists;
 import com.example.magazin.exceptions.ResourceNotFoundException;
 import com.example.magazin.repository.subscribe.SubscribeRepository;
 import com.example.magazin.service.SubscribeService;

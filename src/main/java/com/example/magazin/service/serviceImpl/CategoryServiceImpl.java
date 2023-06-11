@@ -2,7 +2,6 @@ package com.example.magazin.service.serviceImpl;
 
 import com.example.magazin.dto.category.CategoryDto;
 import com.example.magazin.dto.mappers.CategoryMapper;
-import com.example.magazin.dto.user.UserRegistrationDto;
 import com.example.magazin.entity.category.Category;
 import com.example.magazin.exceptions.ResourceNotFoundException;
 import com.example.magazin.repository.category.CategoryRepository;

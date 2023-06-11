@@ -1,30 +1,22 @@
 package com.example.magazin.controller;
 
-import com.example.magazin.dto.category.CategoryDto;
 import com.example.magazin.dto.product.ProductForMainDto;
 import com.example.magazin.dto.product.ProductForOrderDto;
 import com.example.magazin.dto.user.UserDto;
-import com.example.magazin.entity.product.Product;
 import com.example.magazin.entity.user.Role;
 import com.example.magazin.service.CategoryService;
 import com.example.magazin.service.ProductService;
 import com.example.magazin.service.RoleService;
 import com.example.magazin.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Controller

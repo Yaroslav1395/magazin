@@ -7,13 +7,10 @@ import com.example.magazin.dto.product.ProductNewDto;
 import com.example.magazin.dto.productImageDto.ProductImageDto;
 import com.example.magazin.dto.subscribe.SubscribeDto;
 import com.example.magazin.dto.user.UserDto;
-import com.example.magazin.dto.user.UserRegistrationDto;
 import com.example.magazin.dto.validation.OnCreate;
 import com.example.magazin.entity.user.Role;
 import com.example.magazin.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,13 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("quantum/admin")

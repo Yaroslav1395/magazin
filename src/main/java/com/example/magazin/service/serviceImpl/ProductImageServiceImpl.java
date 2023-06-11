@@ -3,14 +3,10 @@ package com.example.magazin.service.serviceImpl;
 import com.example.magazin.dto.productImageDto.ProductImageDto;
 import com.example.magazin.entity.product.Product;
 import com.example.magazin.entity.productImage.ProductImage;
-import com.example.magazin.exceptions.ResourceNotFoundException;
-import com.example.magazin.repository.product.ProductRepository;
 import com.example.magazin.repository.productImage.ProductImageRepository;
 import com.example.magazin.service.ProductImageService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.testng.internal.collections.Ints;
 
 import java.util.*;
 import java.util.stream.Collectors;

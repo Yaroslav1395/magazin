@@ -2,7 +2,6 @@ package com.example.magazin.service.serviceImpl;
 
 import com.example.magazin.dto.coupon.CouponDto;
 import com.example.magazin.dto.mappers.CouponMapper;
-import com.example.magazin.dto.user.UserDto;
 import com.example.magazin.entity.coupon.Coupon;
 import com.example.magazin.exceptions.ResourceNotFoundException;
 import com.example.magazin.repository.coupon.CouponRepository;
@@ -11,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.ls.LSInput;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -9,7 +9,6 @@ import com.example.magazin.service.RoleService;
 import com.example.magazin.service.UserService;
 import com.example.magazin.service.serviceImpl.ProductServiceImpl;
 import com.example.magazin.service.serviceImpl.SubscribeServiceImpl;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

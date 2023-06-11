@@ -2,26 +2,16 @@ package com.example.magazin.controller;
 
 import com.example.magazin.dto.coupon.CouponDto;
 import com.example.magazin.dto.order.OrderDto;
-import com.example.magazin.dto.product.ProductForMainDto;
 import com.example.magazin.dto.product.ProductForOrderDto;
 import com.example.magazin.dto.subscribe.SubscribeDto;
 import com.example.magazin.dto.user.UserDto;
-import com.example.magazin.dto.validation.OnCreate;
 import com.example.magazin.entity.user.Role;
-import com.example.magazin.entity.user.User;
-import com.example.magazin.security.UserDetailsImpl;
 import com.example.magazin.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
